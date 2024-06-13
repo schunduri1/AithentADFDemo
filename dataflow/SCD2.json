@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DS_AzureSQLDB_sink_customers",
+						"referenceName": "DS_AzureSQLDB",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -55,21 +55,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          {Customer Id},",
-				"          {First Name},",
-				"          {Last Name},",
-				"          Company,",
-				"          City,",
-				"          Country,",
-				"          {Phone 1},",
-				"          {Phone 2},",
-				"          Email,",
-				"          {Subscription Date},",
-				"          Website,",
-				"          IsActive",
-				"     )) ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
