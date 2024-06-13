@@ -41,6 +41,9 @@
 				},
 				{
 					"name": "filterexistingrows"
+				},
+				{
+					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -104,6 +107,24 @@
 				"     multiple: true,",
 				"     broadcast: 'auto')~> lookupsink",
 				"lookupsink filter(!isNull(SQL_customerid)) ~> filterexistingrows",
+				"filterexistingrows select(mapColumn(",
+				"          SQL_Surrogate_key,",
+				"          SQL_index,",
+				"          SQL_customerid,",
+				"          SQL_first_name,",
+				"          SQL_last_name,",
+				"          SQL_company,",
+				"          SQL_city,",
+				"          SQL_country,",
+				"          SQL_phone1,",
+				"          SQL_phone2,",
+				"          SQL_email,",
+				"          SQL_subscription_date,",
+				"          SQL_website,",
+				"          SQL_IsActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
 				"AddingIsActive sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
