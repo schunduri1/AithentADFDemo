@@ -71,11 +71,16 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
+				"          customerid = {Customer Id},",
+				"          first_name = {First Name},",
+				"          last_name = {Last Name},",
 				"          company = Company,",
 				"          city = City,",
 				"          country = Country,",
+				"          phone = {Phone 1},",
 				"          email = Email,",
-				"          website = Website",
+				"          website = Website,",
+				"          IsActive",
 				"     )) ~> sink1"
 			]
 		}
