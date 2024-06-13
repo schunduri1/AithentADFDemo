@@ -197,7 +197,7 @@
 				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:false,",
-				"     keys:['Surrogate_key'],",
+				"     keys:['Surrogate_key','customerid','first_name','last_name','city','country'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
