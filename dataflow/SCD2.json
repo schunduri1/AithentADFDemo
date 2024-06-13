@@ -35,6 +35,9 @@
 				},
 				{
 					"name": "select1"
+				},
+				{
+					"name": "lookup1"
 				}
 			],
 			"scriptLines": [
@@ -94,6 +97,9 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
+				"Customers, select1 lookup({Customer Id} == SQL_customerid,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> lookup1",
 				"AddingIsActive sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
