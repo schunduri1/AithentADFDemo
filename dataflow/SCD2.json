@@ -16,7 +16,7 @@
 						"referenceName": "DS_AzureSQLDB",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "Customer1Table"
 				}
 			],
 			"sinks": [
@@ -54,13 +54,15 @@
 				"     ignoreNoFilesFound: false) ~> Customers",
 				"source(output(",
 				"          Surrogate_key as integer,",
+				"          index as string,",
 				"          customerid as string,",
 				"          first_name as string,",
 				"          last_name as string,",
 				"          company as string,",
 				"          city as string,",
 				"          country as string,",
-				"          phone as string,",
+				"          phone1 as string,",
+				"          phone2 as string,",
 				"          email as string,",
 				"          subscription_date as string,",
 				"          website as string,",
@@ -69,7 +71,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> source1",
+				"     format: 'table') ~> Customer1Table",
 				"Customers derive(IsActive = 1) ~> AddingIsActive",
 				"AddingIsActive sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
