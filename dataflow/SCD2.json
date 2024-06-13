@@ -44,6 +44,12 @@
 				},
 				{
 					"name": "select2"
+				},
+				{
+					"name": "derivedcolupdateIsActive"
+				},
+				{
+					"name": "alterRow1"
 				}
 			],
 			"scriptLines": [
@@ -125,6 +131,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 derive(SQL_IsActive = 0) ~> derivedcolupdateIsActive",
+				"derivedcolupdateIsActive alterRow(updateIf(1==1)) ~> alterRow1",
 				"AddingIsActive sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
