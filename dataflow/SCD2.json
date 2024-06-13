@@ -45,7 +45,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Customers",
-				"Customers derive(IsActive = 1) ~> AddingIsActive",
+				"Customers derive(IsActive = 'T') ~> AddingIsActive",
 				"AddingIsActive sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
