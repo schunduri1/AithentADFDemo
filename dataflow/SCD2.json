@@ -12,15 +12,7 @@
 					"name": "Customers"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "DS_AzureSQLDB",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "AddingIsActive",
@@ -45,38 +37,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Customers",
-				"Customers derive(IsActive = 1) ~> AddingIsActive",
-				"AddingIsActive sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          Surrogate_key as integer,",
-				"          customerid as string,",
-				"          first_name as string,",
-				"          last_name as string,",
-				"          company as string,",
-				"          city as string,",
-				"          country as string,",
-				"          phone as string,",
-				"          email as string,",
-				"          subscription_date as date,",
-				"          website as string,",
-				"          IsActive as string",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          company = Company,",
-				"          city = City,",
-				"          country = Country,",
-				"          email = Email,",
-				"          website = Website",
-				"     )) ~> sink1"
+				"Customers derive(IsActive = 1) ~> AddingIsActive"
 			]
 		}
 	}

@@ -60,7 +60,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "customers"
+			"table": "customers1"
 		}
 	}
 }
