@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ADF-Aithent-Conversion-test"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureBlobStorage_Processed_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_password": {
+			"value": ""
+		},
+		"ls_AzureBlob_raw_customers_connectionString": {
+			"value": ""
+		},
+		"ls_AzureSQLDB_Customers_connectionString": {
+			"value": ""
+		},
+		"ls_AzureSQLDB_sink_Customers_password": {
+			"value": ""
+		},
+		"ls_AzureSqlDatabase_password": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "sqldatabase-edri.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "SampleDB"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_server": {
+			"value": "sqldatabase-edri.database.windows.net"
+		},
+		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_database": {
+			"value": "SampleDB"
+		},
+		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_server": {
+			"value": "sqldatabase-edri.database.windows.net"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_database": {
+			"value": "SampleDB"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
