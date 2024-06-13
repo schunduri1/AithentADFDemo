@@ -1,0 +1,9 @@
+{
+	"name": "ADF-Aithent-Conversion-test",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "abe6687a-6477-4b0b-9c00-890590675dd5",
+		"tenantId": "40a2c4d2-f6c1-4df3-847c-5493d9613df1"
+	}
+}

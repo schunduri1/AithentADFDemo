@@ -1,0 +1,17 @@
+{
+	"name": "DS_AzureSQLDB_sink_customers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureSQLDB_sink_Customers",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "customers"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
