@@ -2,7 +2,7 @@
 	"name": "DS_AzureSQLDB",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_AzureSqlDatabase",
+			"referenceName": "ls_AzureSQLDB_Customers",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
