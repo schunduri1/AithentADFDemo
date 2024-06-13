@@ -37,7 +37,10 @@
 					"name": "select1"
 				},
 				{
-					"name": "lookup1"
+					"name": "lookupsink"
+				},
+				{
+					"name": "filterexistingrows"
 				}
 			],
 			"scriptLines": [
@@ -99,7 +102,8 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"Customers, select1 lookup({Customer Id} == SQL_customerid,",
 				"     multiple: true,",
-				"     broadcast: 'auto')~> lookup1",
+				"     broadcast: 'auto')~> lookupsink",
+				"lookupsink filter(!isNull(SQL_customerid)) ~> filterexistingrows",
 				"AddingIsActive sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
