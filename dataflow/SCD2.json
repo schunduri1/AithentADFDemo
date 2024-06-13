@@ -46,8 +46,8 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> Customers",
 				"Customers derive(IsActive = 1) ~> AddingIsActive",
-				"AddingIsActive sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
+				"AddingIsActive sink(allowSchemaDrift: false,",
+				"     validateSchema: true,",
 				"     input(",
 				"          Surrogate_key as integer,",
 				"          customerid as string,",
@@ -69,7 +69,14 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          company = Company,",
+				"          city = City,",
+				"          country = Country,",
+				"          email = Email,",
+				"          website = Website",
+				"     )) ~> sink1"
 			]
 		}
 	}
