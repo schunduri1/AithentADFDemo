@@ -32,6 +32,9 @@
 				{
 					"name": "AddingIsActive",
 					"description": "Creating/updating the columns ' Customer Id, First Name, Last Name, Company, City, Country, Phone 1, Phone 2, Email, Subscription Date, Website, IsActive'"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -73,6 +76,24 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> Customer1Table",
 				"Customers derive(IsActive = 1) ~> AddingIsActive",
+				"Customer1Table select(mapColumn(",
+				"          SQL_Surrogate_key = Surrogate_key,",
+				"          SQL_index = index,",
+				"          SQL_customerid = customerid,",
+				"          SQL_first_name = first_name,",
+				"          SQL_last_name = last_name,",
+				"          SQL_company = company,",
+				"          SQL_city = city,",
+				"          SQL_country = country,",
+				"          SQL_phone1 = phone1,",
+				"          SQL_phone2 = phone2,",
+				"          SQL_email = email,",
+				"          SQL_subscription_date = subscription_date,",
+				"          SQL_website = website,",
+				"          SQL_IsActive = IsActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
 				"AddingIsActive sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
