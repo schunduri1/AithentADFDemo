@@ -26,6 +26,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_AzureSQLDB",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
 				}
 			],
 			"transformations": [
@@ -168,7 +175,46 @@
 				"          email = Email,",
 				"          website = Website,",
 				"          IsActive",
-				"     )) ~> sink1"
+				"     )) ~> sink1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Surrogate_key as integer,",
+				"          customerid as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          company as string,",
+				"          city as string,",
+				"          country as string,",
+				"          phone as string,",
+				"          email as string,",
+				"          subscription_date as date,",
+				"          website as string,",
+				"          IsActive as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['Surrogate_key'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Surrogate_key = SQL_Surrogate_key,",
+				"          customerid = SQL_customerid,",
+				"          first_name = SQL_first_name,",
+				"          last_name = SQL_last_name,",
+				"          company = SQL_company,",
+				"          city = SQL_city,",
+				"          country = SQL_country,",
+				"          phone = SQL_phone1,",
+				"          email = SQL_email,",
+				"          subscription_date = SQL_subscription_date,",
+				"          website = SQL_website,",
+				"          IsActive = SQL_IsActive",
+				"     )) ~> sink2"
 			]
 		}
 	}
