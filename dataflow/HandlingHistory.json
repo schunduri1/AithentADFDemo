@@ -20,7 +20,14 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "lookup1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          Index as string,",
@@ -56,7 +63,27 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> srclookup"
+				"     format: 'table') ~> srclookup",
+				"srclookup select(mapColumn(",
+				"          lkp_Surrogate_key = Surrogate_key,",
+				"          lkp_customerid = customerid,",
+				"          lkp_first_name = first_name,",
+				"          lkp_last_name = last_name,",
+				"          lkp_company = company,",
+				"          lkp_city = city,",
+				"          lkp_country = country,",
+				"          lkp_phone = phone,",
+				"          lkp_email = email,",
+				"          lkp_subscription_date = subscription_date,",
+				"          lkp_website = website,",
+				"          lkp_IsActive = IsActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"source1, srclookup lookup({Customer Id} == customerid,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1"
 			]
 		}
 	}
