@@ -223,10 +223,22 @@
 				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:false,",
+				"     keys:['Surrogate_key','index','customerid','first_name','last_name','company','city','country','phone1','phone2','email','subscription_date','website'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Surrogate_key,",
+				"          customerid,",
+				"          first_name,",
+				"          last_name,",
+				"          company,",
+				"          city,",
+				"          country,",
+				"          email,",
+				"          website",
+				"     )) ~> sink2"
 			]
 		}
 	}
