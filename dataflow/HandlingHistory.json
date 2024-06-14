@@ -19,7 +19,15 @@
 					"name": "srclookup"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_AzureSQLDB",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "lookup1"
@@ -116,7 +124,44 @@
 				"          IsActive",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2"
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Surrogate_key as integer,",
+				"          customerid as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          company as string,",
+				"          city as string,",
+				"          country as string,",
+				"          phone as string,",
+				"          email as string,",
+				"          subscription_date as date,",
+				"          website as string,",
+				"          IsActive as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          customerid = {Customer Id},",
+				"          first_name = {First Name},",
+				"          last_name = {Last Name},",
+				"          company = Company,",
+				"          city = City,",
+				"          country = Country,",
+				"          phone = Index,",
+				"          email = Email,",
+				"          subscription_date = {Subscription Date},",
+				"          website = Website,",
+				"          IsActive",
+				"     )) ~> sink1"
 			]
 		}
 	}
