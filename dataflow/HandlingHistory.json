@@ -46,6 +46,9 @@
 				},
 				{
 					"name": "update"
+				},
+				{
+					"name": "derivedColumnipdate"
 				}
 			],
 			"scriptLines": [
@@ -130,6 +133,7 @@
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"lookup1 filter(!isNull(customerid) && ((first_name!={First Name}) || (last_name!={Last Name}) || (source1@City !=srclookup@city) ||\r",
 				"(source1@Country !=srclookup@country))) ~> update",
+				"update derive(IsActive = 0) ~> derivedColumnipdate",
 				"select2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
