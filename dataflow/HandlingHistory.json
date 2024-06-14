@@ -22,10 +22,10 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "select1"
+					"name": "lookup1"
 				},
 				{
-					"name": "lookup1"
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -48,42 +48,46 @@
 				"     ignoreNoFilesFound: false) ~> source1",
 				"source(output(",
 				"          Surrogate_key as integer,",
+				"          index as string,",
 				"          customerid as string,",
 				"          first_name as string,",
 				"          last_name as string,",
 				"          company as string,",
 				"          city as string,",
 				"          country as string,",
-				"          phone as string,",
+				"          phone1 as string,",
+				"          phone2 as string,",
 				"          email as string,",
-				"          subscription_date as date,",
+				"          subscription_date as string,",
 				"          website as string,",
-				"          IsActive as string",
+				"          IsActive as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> srclookup",
+				"source1, srclookup lookup({Customer Id} == customerid,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
 				"srclookup select(mapColumn(",
 				"          lkp_Surrogate_key = Surrogate_key,",
+				"          lkp_index = index,",
 				"          lkp_customerid = customerid,",
 				"          lkp_first_name = first_name,",
 				"          lkp_last_name = last_name,",
 				"          lkp_company = company,",
 				"          lkp_city = city,",
 				"          lkp_country = country,",
-				"          lkp_phone = phone,",
+				"          lkp_phone1 = phone1,",
+				"          lkp_phone2 = phone2,",
 				"          lkp_email = email,",
 				"          lkp_subscription_date = subscription_date,",
 				"          lkp_website = website,",
 				"          lkp_IsActive = IsActive",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"source1, srclookup lookup({Customer Id} == customerid,",
-				"     multiple: false,",
-				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup1"
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}
