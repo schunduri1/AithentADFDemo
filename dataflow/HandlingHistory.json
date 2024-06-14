@@ -52,6 +52,9 @@
 				},
 				{
 					"name": "selectlookupcolumns"
+				},
+				{
+					"name": "alterRowupdate"
 				}
 			],
 			"scriptLines": [
@@ -155,6 +158,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectlookupcolumns",
+				"selectlookupcolumns alterRow(updateIf(1==1)) ~> alterRowupdate",
 				"selectsourcecolumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
