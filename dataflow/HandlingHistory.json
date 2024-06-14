@@ -236,8 +236,11 @@
 				"          company,",
 				"          city,",
 				"          country,",
+				"          phone = phone1,",
 				"          email,",
-				"          website",
+				"          subscription_date,",
+				"          website,",
+				"          IsActive",
 				"     )) ~> sink2"
 			]
 		}
