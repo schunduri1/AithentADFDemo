@@ -26,6 +26,9 @@
 				},
 				{
 					"name": "select1"
+				},
+				{
+					"name": "filter1"
 				}
 			],
 			"scriptLines": [
@@ -87,7 +90,9 @@
 				"          lkp_IsActive = IsActive",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"lookup1 filter(isNull(customerid) || (first_name !={First Name}) || (last_name !={Last Name}) || (source1@City !=srclookup@city) || \r",
+				"(source1@Country!=srclookup@country)) ~> filter1"
 			]
 		}
 	}
