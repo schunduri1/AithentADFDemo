@@ -32,6 +32,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -96,7 +99,24 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"lookup1 filter(isNull(customerid) || (first_name !={First Name}) || (last_name !={Last Name}) || (source1@City !=srclookup@city) || \r",
 				"(source1@Country!=srclookup@country)) ~> filter1",
-				"filter1 derive(IsActive = 1) ~> derivedColumn1"
+				"filter1 derive(IsActive = 1) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          Index = source1@Index,",
+				"          {Customer Id},",
+				"          {First Name},",
+				"          {Last Name},",
+				"          Company = source1@Company,",
+				"          City = source1@City,",
+				"          Country = source1@Country,",
+				"          {Phone 1},",
+				"          {Phone 2},",
+				"          Email = source1@Email,",
+				"          {Subscription Date},",
+				"          Website = source1@Website,",
+				"          IsActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2"
 			]
 		}
 	}
