@@ -223,7 +223,7 @@
 				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:false,",
-				"     keys:['Surrogate_key','index','customerid','first_name','last_name','company','city','country','phone1','phone2','email','subscription_date','website'],",
+				"     keys:['Surrogate_key','customerid','first_name','last_name','company','city','country','phone1','phone2','email','subscription_date','website'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
