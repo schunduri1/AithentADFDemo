@@ -1,0 +1,63 @@
+{
+	"name": "Booksxml_CDC",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_blob_xml",
+						"type": "DatasetReference"
+					},
+					"name": "Booksxml"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Azure_SQL_DB",
+						"type": "DatasetReference"
+					},
+					"name": "Books"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flattenxmlattributes"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          catalog as (book as ({@id} as string, author as string, description as string, genre as string, price as double, publish_date as date, title as string)[])",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     validationMode: 'none',",
+				"     namespaces: true) ~> Booksxml",
+				"Booksxml foldDown(unroll(catalog.book),",
+				"     mapColumn(",
+				"          Bookid = catalog.book.{@id},",
+				"          author = catalog.book.author,",
+				"          description = catalog.book.description,",
+				"          genre = catalog.book.genre,",
+				"          price = catalog.book.price,",
+				"          publish_date = catalog.book.publish_date,",
+				"          title = catalog.book.title",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenxmlattributes",
+				"flattenxmlattributes sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> Books"
+			]
+		}
+	}
+}
