@@ -40,6 +40,9 @@
 				},
 				{
 					"name": "select1"
+				},
+				{
+					"name": "alterRow1"
 				}
 			],
 			"scriptLines": [
@@ -93,6 +96,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
+				"split1@updaterecords alterRow(updateIf(true())) ~> alterRow1",
 				"split1@Newrecords sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
