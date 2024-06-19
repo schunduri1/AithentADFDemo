@@ -26,6 +26,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL_DB_DIM",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
 				}
 			],
 			"transformations": [
@@ -117,7 +124,28 @@
 				"          stg_title,",
 				"          derived_Hashcolumn,",
 				"          derived_lastdatemodified",
-				"     )) ~> sink1"
+				"     )) ~> sink1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          stg_Bookid,",
+				"          stg_author,",
+				"          stg_description,",
+				"          stg_genre,",
+				"          stg_price,",
+				"          stg_publish_date,",
+				"          stg_title,",
+				"          derived_Hashcolumn,",
+				"          derived_lastdatemodified",
+				"     )) ~> sink2"
 			]
 		}
 	}
