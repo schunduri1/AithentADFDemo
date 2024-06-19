@@ -19,7 +19,15 @@
 					"name": "BooksDim"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL_DB_DIM",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
@@ -29,6 +37,9 @@
 				},
 				{
 					"name": "split1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -62,13 +73,56 @@
 				"     format: 'table') ~> BooksDim",
 				"BooksStage derive(Hashcolumn = toBinary(md5(Bookid+author+genre+title)),",
 				"          lastdatemodified = currentDate()) ~> derivedColumn1",
-				"derivedColumn1, BooksDim lookup(BooksStage@Bookid == BooksDim@Bookid,",
+				"select1, BooksDim lookup(BooksStage@Bookid == Bookid,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookupDim",
-				"lookupDim split(isNull(BooksDim@Bookid),",
-				"     !isNull(BooksDim@Bookid) && notEquals(derivedColumn1@Hashcolumn, BooksDim@hashcolumn),",
-				"     disjoint: false) ~> split1@(Newrecords, updaterecords, Nochange)"
+				"lookupDim split(isNull(Bookid),",
+				"     !isNull(Bookid) && notEquals(derived_Hashcolumn, hashcolumn),",
+				"     disjoint: false) ~> split1@(Newrecords, updaterecords, Nochange)",
+				"derivedColumn1 select(mapColumn(",
+				"          stg_Bookid = Bookid,",
+				"          stg_author = author,",
+				"          stg_description = description,",
+				"          stg_genre = genre,",
+				"          stg_price = price,",
+				"          stg_publish_date = publish_date,",
+				"          stg_title = title,",
+				"          derived_Hashcolumn = Hashcolumn,",
+				"          derived_lastdatemodified = lastdatemodified",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"split1@Newrecords sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Bookid = split1@Newrecords@Bookid,",
+				"          author = split1@Newrecords@author,",
+				"          description = split1@Newrecords@description,",
+				"          genre = split1@Newrecords@genre,",
+				"          price = split1@Newrecords@price,",
+				"          publish_date = split1@Newrecords@publish_date,",
+				"          title = split1@Newrecords@title,",
+				"          Hashcolumn,",
+				"          lastdatemodified = split1@Newrecords@lastdatemodified,",
+				"          Bookid = split1@Newrecords@Bookid,",
+				"          author = split1@Newrecords@author,",
+				"          description = split1@Newrecords@description,",
+				"          genre = split1@Newrecords@genre,",
+				"          price = split1@Newrecords@price,",
+				"          publish_date = split1@Newrecords@publish_date,",
+				"          title = split1@Newrecords@title,",
+				"          lastdatemodified = split1@Newrecords@lastdatemodified,",
+				"          hashcolumn",
+				"     )) ~> sink1"
 			]
 		}
 	}
