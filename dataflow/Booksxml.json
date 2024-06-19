@@ -64,8 +64,7 @@
 				"          genre,",
 				"          price,",
 				"          publish_date,",
-				"          title,",
-				"          Dervivedcolumnbookid",
+				"          title",
 				"     )) ~> BooksStage"
 			]
 		}
