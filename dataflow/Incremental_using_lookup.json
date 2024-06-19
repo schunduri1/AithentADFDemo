@@ -131,6 +131,7 @@
 				"     insertable:true,",
 				"     updateable:true,",
 				"     upsertable:false,",
+				"     keys:['stg_Bookid'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
