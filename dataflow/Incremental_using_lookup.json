@@ -73,7 +73,7 @@
 				"     format: 'table') ~> BooksDim",
 				"BooksStage derive(Hashcolumn = toBinary(md5(Bookid+author+genre+title)),",
 				"          lastdatemodified = currentDate()) ~> derivedColumn1",
-				"select1, BooksDim lookup(BooksStage@Bookid == Bookid,",
+				"select1, BooksDim lookup(stg_Bookid == Bookid,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookupDim",
