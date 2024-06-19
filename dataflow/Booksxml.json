@@ -18,7 +18,7 @@
 						"referenceName": "DS_Azure_SQL_DB",
 						"type": "DatasetReference"
 					},
-					"name": "Books"
+					"name": "BooksStage"
 				}
 			],
 			"transformations": [
@@ -56,7 +56,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> Books"
+				"     errorHandlingOption: 'stopOnFirstError') ~> BooksStage"
 			]
 		}
 	}
