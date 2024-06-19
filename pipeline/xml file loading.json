@@ -17,12 +17,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Booksxml",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"Books": {
-								"TableName": "Books"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
