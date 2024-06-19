@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "3_141083_ClassificationXML.xml",
+				"fileName": "Book_Dataset.xml",
 				"container": "raw"
 			}
 		}
