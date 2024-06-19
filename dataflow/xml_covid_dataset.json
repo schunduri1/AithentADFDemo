@@ -28,9 +28,9 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
-				"source1 foldDown(unroll(row.row),",
+				"source1 foldDown(unroll(row.row, row.row),",
 				"     mapColumn(",
-				"          row",
+				"          address = row.row.{@_address}",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1"
