@@ -24,9 +24,6 @@
 			"transformations": [
 				{
 					"name": "flattenxmlattributes"
-				},
-				{
-					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -50,8 +47,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flattenxmlattributes",
-				"flattenxmlattributes derive(Dervivedcolumnbookid = toInteger(Bookid)) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"flattenxmlattributes sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -62,7 +58,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          Bookid = Dervivedcolumnbookid,",
+				"          Bookid,",
 				"          author,",
 				"          description,",
 				"          genre,",
