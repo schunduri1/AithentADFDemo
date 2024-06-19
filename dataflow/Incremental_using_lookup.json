@@ -54,7 +54,7 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          Bookid as integer,",
+				"          Bookid as string,",
 				"          author as string,",
 				"          description as string,",
 				"          genre as string,",
@@ -67,7 +67,8 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> BooksStage",
 				"source(output(",
-				"          Bookid as integer,",
+				"          Surrogate_key as integer,",
+				"          Bookid as string,",
 				"          author as string,",
 				"          description as string,",
 				"          genre as string,",
