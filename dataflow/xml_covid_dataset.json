@@ -27,9 +27,6 @@
 				}
 			],
 			"scriptLines": [
-				"parameters{",
-				"     Tablename as string",
-				"}",
 				"source(output(",
 				"          row as (row as ({@_address} as string, {@_id} as string, {@_position} as boolean, {@_uuid} as string, age as string, age_num as double, estimate as double, flag as string, indicator as string, stub_label as string, stub_label_num as double, stub_name as string, stub_name_num as short, unit as string, unit_num as short, year as short, year_num as short)[])",
 				"     ),",
@@ -70,7 +67,26 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          address,",
+				"          id,",
+				"          position,",
+				"          uuid,",
+				"          age,",
+				"          age_num,",
+				"          estimate,",
+				"          flag,",
+				"          indicator,",
+				"          stub_label,",
+				"          stub_label_num,",
+				"          stub_name,",
+				"          stub_name_num,",
+				"          unit,",
+				"          unit_num,",
+				"          year,",
+				"          year_num",
+				"     )) ~> sink1"
 			]
 		}
 	}
