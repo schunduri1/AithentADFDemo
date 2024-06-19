@@ -36,7 +36,7 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
-				"source1 foldDown(unroll((row.row)),",
+				"source1 foldDown(unroll(row.row),",
 				"     mapColumn(",
 				"          address = row.row.{@_address},",
 				"          id = row.row.{@_id},",
