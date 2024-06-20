@@ -124,7 +124,7 @@
 				"          publish_date = stg_publish_date,",
 				"          title = stg_title,",
 				"          Hashcolumn = derived_Hashcolumn,",
-				"          derived_lastdatemodified,",
+				"          lastdatemodified = derived_lastdatemodified,",
 				"          Surrogate_key",
 				"     )) ~> sink1",
 				"alterRow1 sink(allowSchemaDrift: true,",
