@@ -123,7 +123,7 @@
 				"          price = stg_price,",
 				"          publish_date = stg_publish_date,",
 				"          title = stg_title,",
-				"          derived_Hashcolumn,",
+				"          Hashcolumn = derived_Hashcolumn,",
 				"          derived_lastdatemodified,",
 				"          Surrogate_key",
 				"     )) ~> sink1",
