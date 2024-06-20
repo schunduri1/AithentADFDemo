@@ -16,40 +16,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "GenericSCDType2",
-						"type": "DataFlowReference",
-						"parameters": {
-							"PrimaryKey": {
-								"value": "'@{pipeline().parameters.PrimaryKey}'",
-								"type": "Expression"
-							},
-							"Columns": {
-								"value": "'@{pipeline().parameters.ColumnNames}'",
-								"type": "Expression"
-							}
-						},
-						"datasetParameters": {
-							"GenericInput": {
-								"Folder": {
-									"value": "@pipeline().parameters.IncomingDimensionFolder",
-									"type": "Expression"
-								}
-							},
-							"ExistingDimensionTable": {
-								"Table": {
-									"value": "@pipeline().parameters.DimensionTable",
-									"type": "Expression"
-								}
-							},
-							"DimensionTableSink": {
-								"Table": {
-									"value": "@pipeline().parameters.DimensionTable",
-									"type": "Expression"
-								}
-							}
-						}
-					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
