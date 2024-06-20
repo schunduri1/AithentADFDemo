@@ -129,7 +129,7 @@
 				"alterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
-				"     insertable:true,",
+				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:false,",
 				"     keys:['Bookid'],",
