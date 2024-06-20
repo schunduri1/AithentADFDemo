@@ -14,16 +14,25 @@
 		"AzureSqlDatabase1_password": {
 			"value": ""
 		},
+		"LS_Azure_SQL_DB_connectionString": {
+			"value": ""
+		},
 		"ls_AzureBlob_raw_customers_connectionString": {
 			"value": ""
 		},
 		"ls_AzureSQLDB_Customers_connectionString": {
 			"value": ""
 		},
-		"ls_AzureSQLDB_sink_Customers_password": {
+		"ls_AzureSQLDB_customers1_connectionString": {
+			"value": ""
+		},
+		"ls_AzureSQLDB_sink_Customers_connectionString": {
 			"value": ""
 		},
 		"ls_AzureSqlDatabase_password": {
+			"value": ""
+		},
+		"ls_azureblob_raw_connectionString": {
 			"value": ""
 		},
 		"AzureSqlDatabase1_properties_typeProperties_server": {
@@ -33,15 +42,6 @@
 			"value": "SampleDB"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_userName": {
-			"value": "sqladmin"
-		},
-		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_server": {
-			"value": "sqldatabase-edri.database.windows.net"
-		},
-		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_database": {
-			"value": "SampleDB"
-		},
-		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_userName": {
 			"value": "sqladmin"
 		},
 		"ls_AzureSqlDatabase_properties_typeProperties_server": {

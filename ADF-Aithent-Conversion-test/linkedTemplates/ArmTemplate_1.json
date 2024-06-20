@@ -6,616 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "ADF-Aithent-Conversion-test"
-		},
-		"AzureBlobStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
-		},
-		"AzureBlobStorage_Processed_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_Processed'"
-		},
-		"AzureSqlDatabase1_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1'"
-		},
-		"LS_Azure_SQL_DB_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LS_Azure_SQL_DB'"
-		},
-		"ls_AzureBlob_raw_customers_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_AzureBlob_raw_customers'"
-		},
-		"ls_AzureSQLDB_Customers_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_AzureSQLDB_Customers'"
-		},
-		"ls_AzureSQLDB_customers1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_AzureSQLDB_customers1'"
-		},
-		"ls_AzureSQLDB_sink_Customers_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_AzureSQLDB_sink_Customers'"
-		},
-		"ls_AzureSqlDatabase_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_AzureSqlDatabase'"
-		},
-		"ls_azureblob_raw_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_azureblob_raw'"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sqldatabase-edri.database.windows.net"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SampleDB"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sqladmin"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sqldatabase-edri.database.windows.net"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SampleDB"
-		},
-		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sqladmin"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_Covid_dataset')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "xml_covid_dataset",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"sink1": {
-										"TableName": "Covid_Stage"
-									}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/xml_covid_dataset')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_HistoryHandling')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "HandlingHistory",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "HandlingHistory",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"srclookup": {},
-									"sink1": {},
-									"sink2": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/HandlingHistory')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_Incremental')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Incremental_using_lookup",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Incremental_using_lookup",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"BooksStage": {},
-									"BooksDim": {},
-									"sink1": {},
-									"sink2": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/Incremental_using_lookup')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/xml file loading')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "Booksxml",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"Booksxml": {},
-									"BooksStage": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/Booksxml')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_AzureSQLDB')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_AzureSQLDB_Customers",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Surrogate_key",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "customerid",
-						"type": "varchar"
-					},
-					{
-						"name": "first_name",
-						"type": "varchar"
-					},
-					{
-						"name": "last_name",
-						"type": "varchar"
-					},
-					{
-						"name": "company",
-						"type": "varchar"
-					},
-					{
-						"name": "city",
-						"type": "varchar"
-					},
-					{
-						"name": "country",
-						"type": "varchar"
-					},
-					{
-						"name": "phone",
-						"type": "varchar"
-					},
-					{
-						"name": "email",
-						"type": "varchar"
-					},
-					{
-						"name": "subscription_date",
-						"type": "date"
-					},
-					{
-						"name": "website",
-						"type": "varchar"
-					},
-					{
-						"name": "IsActive",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "customers1"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_AzureSQLDB_Customers')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_AzureSQLDB_customers')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_AzureSQLDB_customers1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_AzureSQLDB_customers1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_AzureSQLDB_sink_customers')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_AzureSqlDatabase",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "customers"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_AzureSqlDatabase')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_Azure_SQL_DB')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_Azure_SQL_DB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Books_Stage"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_SQL_DB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_Customers')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_AzureBlob_raw_customers",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "customers-100.csv",
-						"container": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "Index",
-						"type": "String"
-					},
-					{
-						"name": "Customer Id",
-						"type": "String"
-					},
-					{
-						"name": "First Name",
-						"type": "String"
-					},
-					{
-						"name": "Last Name",
-						"type": "String"
-					},
-					{
-						"name": "Company",
-						"type": "String"
-					},
-					{
-						"name": "City",
-						"type": "String"
-					},
-					{
-						"name": "Country",
-						"type": "String"
-					},
-					{
-						"name": "Phone 1",
-						"type": "String"
-					},
-					{
-						"name": "Phone 2",
-						"type": "String"
-					},
-					{
-						"name": "Email",
-						"type": "String"
-					},
-					{
-						"name": "Subscription Date",
-						"type": "String"
-					},
-					{
-						"name": "Website",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_AzureBlob_raw_customers')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GenericDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Folder": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "SCD"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "customers-100.csv",
-						"folderPath": {
-							"value": "@dataset().Folder",
-							"type": "Expression"
-						},
-						"container": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SqlDimension')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_AzureSqlDatabase",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Table": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": {
-						"value": "@dataset().Table",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_AzureSqlDatabase')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_Azure_SQL_DB_Covid')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_Azure_SQL_DB",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"TableName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_SQL_DB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_Azure_SQL_DB_DIM')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_Azure_SQL_DB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Books"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_SQL_DB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_azure_blob_covid_dataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azureblob_raw",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Xml",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Covid_data.xml",
-						"container": "raw"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azureblob_raw')]"
-			]
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ds_blob_xml')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -635,1049 +31,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azureblob_raw')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
-				}
-			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_Processed')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage_Processed_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]",
-					"database": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('AzureSqlDatabase1_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Azure_SQL_DB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('LS_Azure_SQL_DB_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_AzureBlob_raw_customers')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_AzureBlob_raw_customers_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_AzureSQLDB_Customers')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_AzureSQLDB_Customers_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_AzureSQLDB_customers1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_AzureSQLDB_customers1_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_AzureSQLDB_sink_Customers')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_AzureSQLDB_sink_Customers_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_AzureSqlDatabase')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_server')]",
-					"database": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_AzureSqlDatabase_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_azureblob_raw')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_azureblob_raw_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Booksxml')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "ds_blob_xml",
-								"type": "DatasetReference"
-							},
-							"name": "Booksxml"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Azure_SQL_DB",
-								"type": "DatasetReference"
-							},
-							"name": "BooksStage"
-						}
-					],
-					"transformations": [
-						{
-							"name": "flattenxmlattributes"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          catalog as (book as ({@id} as string, author as string, description as string, genre as string, price as double, publish_date as date, title as string)[])",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false,",
-						"     validationMode: 'none',",
-						"     namespaces: true) ~> Booksxml",
-						"Booksxml foldDown(unroll(catalog.book),",
-						"     mapColumn(",
-						"          Bookid = catalog.book.{@id},",
-						"          author = catalog.book.author,",
-						"          description = catalog.book.description,",
-						"          genre = catalog.book.genre,",
-						"          price = catalog.book.price,",
-						"          publish_date = catalog.book.publish_date,",
-						"          title = catalog.book.title",
-						"     ),",
-						"     skipDuplicateMapInputs: false,",
-						"     skipDuplicateMapOutputs: false) ~> flattenxmlattributes",
-						"flattenxmlattributes sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     preSQLs:['TRUNCATE TABLE DBO.BOOKS_STAGE'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          Bookid,",
-						"          author,",
-						"          description,",
-						"          genre,",
-						"          price,",
-						"          publish_date,",
-						"          title",
-						"     )) ~> BooksStage"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_blob_xml')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Azure_SQL_DB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Booksxml_CDC')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "ds_blob_xml",
-								"type": "DatasetReference"
-							},
-							"name": "Booksxml"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_Azure_SQL_DB",
-								"type": "DatasetReference"
-							},
-							"name": "Books"
-						}
-					],
-					"transformations": [
-						{
-							"name": "flattenxmlattributes"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          catalog as (book as ({@id} as string, author as string, description as string, genre as string, price as double, publish_date as date, title as string)[])",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false,",
-						"     validationMode: 'none',",
-						"     namespaces: true) ~> Booksxml",
-						"Booksxml foldDown(unroll(catalog.book),",
-						"     mapColumn(",
-						"          Bookid = catalog.book.{@id},",
-						"          author = catalog.book.author,",
-						"          description = catalog.book.description,",
-						"          genre = catalog.book.genre,",
-						"          price = catalog.book.price,",
-						"          publish_date = catalog.book.publish_date,",
-						"          title = catalog.book.title",
-						"     ),",
-						"     skipDuplicateMapInputs: false,",
-						"     skipDuplicateMapOutputs: false) ~> flattenxmlattributes",
-						"flattenxmlattributes sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> Books"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_blob_xml')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Azure_SQL_DB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/HandlingHistory')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Customers",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_AzureSQLDB",
-								"type": "DatasetReference"
-							},
-							"name": "srclookup"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_AzureSQLDB",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_AzureSQLDB",
-								"type": "DatasetReference"
-							},
-							"name": "sink2"
-						}
-					],
-					"transformations": [
-						{
-							"name": "lookup1"
-						},
-						{
-							"name": "select1"
-						},
-						{
-							"name": "Insert"
-						},
-						{
-							"name": "derivedColumn1"
-						},
-						{
-							"name": "selectsourcecolumns"
-						},
-						{
-							"name": "update"
-						},
-						{
-							"name": "derivedColumnipdate"
-						},
-						{
-							"name": "selectlookupcolumns"
-						},
-						{
-							"name": "alterRowupdate"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Index as string,",
-						"          {Customer Id} as string,",
-						"          {First Name} as string,",
-						"          {Last Name} as string,",
-						"          Company as string,",
-						"          City as string,",
-						"          Country as string,",
-						"          {Phone 1} as string,",
-						"          {Phone 2} as string,",
-						"          Email as string,",
-						"          {Subscription Date} as string,",
-						"          Website as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source(output(",
-						"          Surrogate_key as integer,",
-						"          index as string,",
-						"          customerid as string,",
-						"          first_name as string,",
-						"          last_name as string,",
-						"          company as string,",
-						"          city as string,",
-						"          country as string,",
-						"          phone1 as string,",
-						"          phone2 as string,",
-						"          email as string,",
-						"          subscription_date as string,",
-						"          website as string,",
-						"          IsActive as integer",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'select * from customers1 where IsActive=1',",
-						"     format: 'query') ~> srclookup",
-						"source1, srclookup lookup({Customer Id} == customerid,",
-						"     multiple: false,",
-						"     pickup: 'any',",
-						"     broadcast: 'auto')~> lookup1",
-						"srclookup select(mapColumn(",
-						"          lkp_Surrogate_key = Surrogate_key,",
-						"          lkp_index = index,",
-						"          lkp_customerid = customerid,",
-						"          lkp_first_name = first_name,",
-						"          lkp_last_name = last_name,",
-						"          lkp_company = company,",
-						"          lkp_city = city,",
-						"          lkp_country = country,",
-						"          lkp_phone1 = phone1,",
-						"          lkp_phone2 = phone2,",
-						"          lkp_email = email,",
-						"          lkp_subscription_date = subscription_date,",
-						"          lkp_website = website,",
-						"          lkp_IsActive = IsActive",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"lookup1 filter(isNull(customerid) || (first_name !={First Name}) || (last_name !={Last Name}) || (source1@City !=srclookup@city) || \r",
-						"(source1@Country!=srclookup@country)) ~> Insert",
-						"Insert derive(IsActive = 1) ~> derivedColumn1",
-						"derivedColumn1 select(mapColumn(",
-						"          Index = source1@Index,",
-						"          {Customer Id},",
-						"          {First Name},",
-						"          {Last Name},",
-						"          Company = source1@Company,",
-						"          City = source1@City,",
-						"          Country = source1@Country,",
-						"          {Phone 1},",
-						"          {Phone 2},",
-						"          Email = source1@Email,",
-						"          {Subscription Date},",
-						"          Website = source1@Website,",
-						"          IsActive",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> selectsourcecolumns",
-						"lookup1 filter(!isNull(customerid) && ((first_name!={First Name}) || (last_name!={Last Name}) || (source1@City !=srclookup@city) ||\r",
-						"(source1@Country !=srclookup@country))) ~> update",
-						"update derive(IsActive = 0) ~> derivedColumnipdate",
-						"derivedColumnipdate select(mapColumn(",
-						"          Surrogate_key,",
-						"          index = srclookup@index,",
-						"          customerid,",
-						"          first_name,",
-						"          last_name,",
-						"          company = srclookup@company,",
-						"          city = srclookup@city,",
-						"          country = srclookup@country,",
-						"          phone1,",
-						"          phone2,",
-						"          email = srclookup@email,",
-						"          subscription_date,",
-						"          website = srclookup@website,",
-						"          IsActive",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> selectlookupcolumns",
-						"selectlookupcolumns alterRow(updateIf(1==1)) ~> alterRowupdate",
-						"selectsourcecolumns sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          Surrogate_key as integer,",
-						"          customerid as string,",
-						"          first_name as string,",
-						"          last_name as string,",
-						"          company as string,",
-						"          city as string,",
-						"          country as string,",
-						"          phone as string,",
-						"          email as string,",
-						"          subscription_date as date,",
-						"          website as string,",
-						"          IsActive as string",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          customerid = {Customer Id},",
-						"          first_name = {First Name},",
-						"          last_name = {Last Name},",
-						"          company = Company,",
-						"          city = City,",
-						"          country = Country,",
-						"          phone = Index,",
-						"          email = Email,",
-						"          subscription_date = {Subscription Date},",
-						"          website = Website,",
-						"          IsActive",
-						"     )) ~> sink1",
-						"alterRowupdate sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          Surrogate_key as integer,",
-						"          customerid as string,",
-						"          first_name as string,",
-						"          last_name as string,",
-						"          company as string,",
-						"          city as string,",
-						"          country as string,",
-						"          phone as string,",
-						"          email as string,",
-						"          subscription_date as date,",
-						"          website as string,",
-						"          IsActive as string",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:false,",
-						"     updateable:true,",
-						"     upsertable:false,",
-						"     keys:['Surrogate_key','customerid','first_name','last_name','company','city','country','email','subscription_date','website'],",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          Surrogate_key,",
-						"          customerid,",
-						"          first_name,",
-						"          last_name,",
-						"          company,",
-						"          city,",
-						"          country,",
-						"          phone = phone1,",
-						"          email,",
-						"          subscription_date,",
-						"          website,",
-						"          IsActive",
-						"     )) ~> sink2"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Customers')]",
-				"[concat(variables('factoryId'), '/datasets/DS_AzureSQLDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Incremental_using_lookup')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Azure_SQL_DB",
-								"type": "DatasetReference"
-							},
-							"name": "BooksStage"
-						},
-						{
-							"dataset": {
-								"referenceName": "ds_Azure_SQL_DB_DIM",
-								"type": "DatasetReference"
-							},
-							"name": "BooksDim"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "ds_Azure_SQL_DB_DIM",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						},
-						{
-							"dataset": {
-								"referenceName": "ds_Azure_SQL_DB_DIM",
-								"type": "DatasetReference"
-							},
-							"name": "sink2"
-						}
-					],
-					"transformations": [
-						{
-							"name": "derivedColumn1"
-						},
-						{
-							"name": "lookupDim"
-						},
-						{
-							"name": "split1"
-						},
-						{
-							"name": "select1"
-						},
-						{
-							"name": "alterRow1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Bookid as string,",
-						"          author as string,",
-						"          description as string,",
-						"          genre as string,",
-						"          price as double,",
-						"          publish_date as date,",
-						"          title as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> BooksStage",
-						"source(output(",
-						"          Surrogate_key as integer,",
-						"          Bookid as string,",
-						"          author as string,",
-						"          description as string,",
-						"          genre as string,",
-						"          price as double,",
-						"          publish_date as date,",
-						"          title as string,",
-						"          lastdatemodified as date,",
-						"          hashcolumn as binary",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> BooksDim",
-						"BooksStage derive(Hashcolumn = toBinary(md5(author+genre+title)),",
-						"          lastdatemodified = currentDate()) ~> derivedColumn1",
-						"select1, BooksDim lookup(stg_Bookid == Bookid,",
-						"     multiple: false,",
-						"     pickup: 'any',",
-						"     broadcast: 'auto')~> lookupDim",
-						"lookupDim split(isNull(Bookid),",
-						"     !isNull(Bookid) && notEquals(derived_Hashcolumn, hashcolumn),",
-						"     disjoint: false) ~> split1@(Newrecords, updaterecords, Nochange)",
-						"derivedColumn1 select(mapColumn(",
-						"          stg_Bookid = Bookid,",
-						"          stg_author = author,",
-						"          stg_description = description,",
-						"          stg_genre = genre,",
-						"          stg_price = price,",
-						"          stg_publish_date = publish_date,",
-						"          stg_title = title,",
-						"          derived_Hashcolumn = Hashcolumn,",
-						"          derived_lastdatemodified = lastdatemodified",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"split1@updaterecords alterRow(updateIf(true())) ~> alterRow1",
-						"split1@Newrecords sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          Bookid = stg_Bookid,",
-						"          author = stg_author,",
-						"          description = stg_description,",
-						"          genre = stg_genre,",
-						"          price = stg_price,",
-						"          publish_date = stg_publish_date,",
-						"          title = stg_title,",
-						"          hashcolumn = derived_Hashcolumn,",
-						"          lastdatemodified = derived_lastdatemodified",
-						"     )) ~> sink1",
-						"alterRow1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:false,",
-						"     updateable:true,",
-						"     upsertable:false,",
-						"     keys:['Bookid'],",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          Bookid = stg_Bookid,",
-						"          author = stg_author,",
-						"          description = stg_description,",
-						"          genre = stg_genre,",
-						"          price = stg_price,",
-						"          publish_date = stg_publish_date,",
-						"          title = stg_title,",
-						"          Hashcolumn = derived_Hashcolumn,",
-						"          lastdatemodified = derived_lastdatemodified",
-						"     )) ~> sink2"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Azure_SQL_DB')]",
-				"[concat(variables('factoryId'), '/datasets/ds_Azure_SQL_DB_DIM')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCD2')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_Customers",
-								"type": "DatasetReference"
-							},
-							"name": "Customers"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_AzureSQLDB",
-								"type": "DatasetReference"
-							},
-							"name": "Customer1Table"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_AzureSQLDB",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						},
-						{
-							"dataset": {
-								"referenceName": "DS_AzureSQLDB",
-								"type": "DatasetReference"
-							},
-							"name": "sink2"
-						}
-					],
-					"transformations": [
-						{
-							"name": "AddingIsActive",
-							"description": "Creating/updating the columns ' Customer Id, First Name, Last Name, Company, City, Country, Phone 1, Phone 2, Email, Subscription Date, Website, IsActive'"
-						},
-						{
-							"name": "select1"
-						},
-						{
-							"name": "lookupsink"
-						},
-						{
-							"name": "filterexistingrows"
-						},
-						{
-							"name": "select2"
-						},
-						{
-							"name": "derivedcolupdateIsActive"
-						},
-						{
-							"name": "alterRow1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          Index as string,",
-						"          {Customer Id} as string,",
-						"          {First Name} as string,",
-						"          {Last Name} as string,",
-						"          Company as string,",
-						"          City as string,",
-						"          Country as string,",
-						"          {Phone 1} as string,",
-						"          {Phone 2} as string,",
-						"          Email as string,",
-						"          {Subscription Date} as string,",
-						"          Website as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> Customers",
-						"source(output(",
-						"          Surrogate_key as integer,",
-						"          index as string,",
-						"          customerid as string,",
-						"          first_name as string,",
-						"          last_name as string,",
-						"          company as string,",
-						"          city as string,",
-						"          country as string,",
-						"          phone1 as string,",
-						"          phone2 as string,",
-						"          email as string,",
-						"          subscription_date as string,",
-						"          website as string,",
-						"          IsActive as integer",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'select * from customers where IsActive=1',",
-						"     format: 'query') ~> Customer1Table",
-						"Customers derive(IsActive = 1) ~> AddingIsActive",
-						"Customer1Table select(mapColumn(",
-						"          SQL_Surrogate_key = Surrogate_key,",
-						"          SQL_index = index,",
-						"          SQL_customerid = customerid,",
-						"          SQL_first_name = first_name,",
-						"          SQL_last_name = last_name,",
-						"          SQL_company = company,",
-						"          SQL_city = city,",
-						"          SQL_country = country,",
-						"          SQL_phone1 = phone1,",
-						"          SQL_phone2 = phone2,",
-						"          SQL_email = email,",
-						"          SQL_subscription_date = subscription_date,",
-						"          SQL_website = website,",
-						"          SQL_IsActive = IsActive",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"Customers, select1 lookup({Customer Id} == SQL_customerid,",
-						"     multiple: true,",
-						"     broadcast: 'auto')~> lookupsink",
-						"lookupsink filter(!isNull(SQL_customerid)) ~> filterexistingrows",
-						"filterexistingrows select(mapColumn(",
-						"          SQL_Surrogate_key,",
-						"          SQL_index,",
-						"          SQL_customerid,",
-						"          SQL_first_name,",
-						"          SQL_last_name,",
-						"          SQL_company,",
-						"          SQL_city,",
-						"          SQL_country,",
-						"          SQL_phone1,",
-						"          SQL_phone2,",
-						"          SQL_email,",
-						"          SQL_subscription_date,",
-						"          SQL_website,",
-						"          SQL_IsActive",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select2",
-						"select2 derive(SQL_IsActive = 0) ~> derivedcolupdateIsActive",
-						"derivedcolupdateIsActive alterRow(updateIf(1==1)) ~> alterRow1",
-						"AddingIsActive sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          Surrogate_key as integer,",
-						"          customerid as string,",
-						"          first_name as string,",
-						"          last_name as string,",
-						"          company as string,",
-						"          city as string,",
-						"          country as string,",
-						"          phone as string,",
-						"          email as string,",
-						"          subscription_date as date,",
-						"          website as string,",
-						"          IsActive as string",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 2,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          customerid = {Customer Id},",
-						"          first_name = {First Name},",
-						"          last_name = {Last Name},",
-						"          company = Company,",
-						"          city = City,",
-						"          country = Country,",
-						"          phone = {Phone 1},",
-						"          email = Email,",
-						"          website = Website,",
-						"          IsActive",
-						"     )) ~> sink1",
-						"alterRow1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          Surrogate_key as integer,",
-						"          customerid as string,",
-						"          first_name as string,",
-						"          last_name as string,",
-						"          company as string,",
-						"          city as string,",
-						"          country as string,",
-						"          phone as string,",
-						"          email as string,",
-						"          subscription_date as date,",
-						"          website as string,",
-						"          IsActive as string",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:false,",
-						"     updateable:true,",
-						"     upsertable:false,",
-						"     keys:['Surrogate_key','customerid','first_name','last_name','city','country'],",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     saveOrder: 1,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          Surrogate_key = SQL_Surrogate_key,",
-						"          customerid = SQL_customerid,",
-						"          first_name = SQL_first_name,",
-						"          last_name = SQL_last_name,",
-						"          company = SQL_company,",
-						"          city = SQL_city,",
-						"          country = SQL_country,",
-						"          phone = SQL_phone1,",
-						"          email = SQL_email,",
-						"          subscription_date = SQL_subscription_date,",
-						"          website = SQL_website,",
-						"          IsActive = SQL_IsActive",
-						"     )) ~> sink2"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Customers')]",
-				"[concat(variables('factoryId'), '/datasets/DS_AzureSQLDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/xml_covid_dataset')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "ds_azure_blob_covid_dataset",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "ds_Azure_SQL_DB_Covid",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "flatten1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          row as (row as ({@_address} as string, {@_id} as string, {@_position} as boolean, {@_uuid} as string, age as string, age_num as double, estimate as double, flag as string, indicator as string, stub_label as string, stub_label_num as double, stub_name as string, stub_name_num as short, unit as string, unit_num as short, year as short, year_num as short)[])",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     limit: 10,",
-						"     ignoreNoFilesFound: false,",
-						"     validationMode: 'none',",
-						"     namespaces: true) ~> source1",
-						"source1 foldDown(unroll(row.row),",
-						"     mapColumn(",
-						"          address = row.row.{@_address},",
-						"          id = row.row.{@_id},",
-						"          position = row.row.{@_position},",
-						"          uuid = row.row.{@_uuid},",
-						"          age = row.row.age,",
-						"          age_num = row.row.age_num,",
-						"          estimate = row.row.estimate,",
-						"          flag = row.row.flag,",
-						"          indicator = row.row.indicator,",
-						"          stub_label = row.row.stub_label,",
-						"          stub_label_num = row.row.stub_label_num,",
-						"          stub_name = row.row.stub_name,",
-						"          stub_name_num = row.row.stub_name_num,",
-						"          unit = row.row.unit,",
-						"          unit_num = row.row.unit_num,",
-						"          year = row.row.year,",
-						"          year_num = row.row.year_num",
-						"     ),",
-						"     skipDuplicateMapInputs: false,",
-						"     skipDuplicateMapOutputs: false) ~> flatten1",
-						"flatten1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          address,",
-						"          id,",
-						"          position,",
-						"          uuid,",
-						"          age,",
-						"          age_num,",
-						"          estimate,",
-						"          flag,",
-						"          indicator,",
-						"          stub_label,",
-						"          stub_label_num,",
-						"          stub_name,",
-						"          stub_name_num,",
-						"          unit,",
-						"          unit_num,",
-						"          year,",
-						"          year_num",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_azure_blob_covid_dataset')]",
-				"[concat(variables('factoryId'), '/datasets/ds_Azure_SQL_DB_Covid')]"
-			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/adfcdc')]",
@@ -2058,8 +412,1074 @@
 				"status": "Stopped",
 				"allowVNetOverride": false
 			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Booksxml')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_blob_xml",
+								"type": "DatasetReference"
+							},
+							"name": "Booksxml"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Azure_SQL_DB",
+								"type": "DatasetReference"
+							},
+							"name": "BooksStage"
+						}
+					],
+					"transformations": [
+						{
+							"name": "flattenxmlattributes"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          catalog as (book as ({@id} as string, author as string, description as string, genre as string, price as double, publish_date as date, title as string)[])",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     validationMode: 'none',",
+						"     namespaces: true) ~> Booksxml",
+						"Booksxml foldDown(unroll(catalog.book),",
+						"     mapColumn(",
+						"          Bookid = catalog.book.{@id},",
+						"          author = catalog.book.author,",
+						"          description = catalog.book.description,",
+						"          genre = catalog.book.genre,",
+						"          price = catalog.book.price,",
+						"          publish_date = catalog.book.publish_date,",
+						"          title = catalog.book.title",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flattenxmlattributes",
+						"flattenxmlattributes sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     preSQLs:['TRUNCATE TABLE DBO.BOOKS_STAGE'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Bookid,",
+						"          author,",
+						"          description,",
+						"          genre,",
+						"          price,",
+						"          publish_date,",
+						"          title",
+						"     )) ~> BooksStage"
+					]
+				}
+			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_SQL_DB')]"
+				"[concat(variables('factoryId'), '/datasets/ds_blob_xml')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Booksxml_CDC')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_blob_xml",
+								"type": "DatasetReference"
+							},
+							"name": "Booksxml"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Azure_SQL_DB",
+								"type": "DatasetReference"
+							},
+							"name": "Books"
+						}
+					],
+					"transformations": [
+						{
+							"name": "flattenxmlattributes"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          catalog as (book as ({@id} as string, author as string, description as string, genre as string, price as double, publish_date as date, title as string)[])",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     validationMode: 'none',",
+						"     namespaces: true) ~> Booksxml",
+						"Booksxml foldDown(unroll(catalog.book),",
+						"     mapColumn(",
+						"          Bookid = catalog.book.{@id},",
+						"          author = catalog.book.author,",
+						"          description = catalog.book.description,",
+						"          genre = catalog.book.genre,",
+						"          price = catalog.book.price,",
+						"          publish_date = catalog.book.publish_date,",
+						"          title = catalog.book.title",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flattenxmlattributes",
+						"flattenxmlattributes sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> Books"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_blob_xml')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HandlingHistory')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Customers",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_AzureSQLDB",
+								"type": "DatasetReference"
+							},
+							"name": "srclookup"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_AzureSQLDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_AzureSQLDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "lookup1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "Insert"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "selectsourcecolumns"
+						},
+						{
+							"name": "update"
+						},
+						{
+							"name": "derivedColumnipdate"
+						},
+						{
+							"name": "selectlookupcolumns"
+						},
+						{
+							"name": "alterRowupdate"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          {Customer Id} as string,",
+						"          {First Name} as string,",
+						"          {Last Name} as string,",
+						"          Company as string,",
+						"          City as string,",
+						"          Country as string,",
+						"          {Phone 1} as string,",
+						"          {Phone 2} as string,",
+						"          Email as string,",
+						"          {Subscription Date} as string,",
+						"          Website as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source(output(",
+						"          Surrogate_key as integer,",
+						"          index as string,",
+						"          customerid as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company as string,",
+						"          city as string,",
+						"          country as string,",
+						"          phone1 as string,",
+						"          phone2 as string,",
+						"          email as string,",
+						"          subscription_date as string,",
+						"          website as string,",
+						"          IsActive as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select * from customers1 where IsActive=1',",
+						"     format: 'query') ~> srclookup",
+						"source1, srclookup lookup({Customer Id} == customerid,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> lookup1",
+						"srclookup select(mapColumn(",
+						"          lkp_Surrogate_key = Surrogate_key,",
+						"          lkp_index = index,",
+						"          lkp_customerid = customerid,",
+						"          lkp_first_name = first_name,",
+						"          lkp_last_name = last_name,",
+						"          lkp_company = company,",
+						"          lkp_city = city,",
+						"          lkp_country = country,",
+						"          lkp_phone1 = phone1,",
+						"          lkp_phone2 = phone2,",
+						"          lkp_email = email,",
+						"          lkp_subscription_date = subscription_date,",
+						"          lkp_website = website,",
+						"          lkp_IsActive = IsActive",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"lookup1 filter(isNull(customerid) || (first_name !={First Name}) || (last_name !={Last Name}) || (source1@City !=srclookup@city) || \r",
+						"(source1@Country!=srclookup@country)) ~> Insert",
+						"Insert derive(IsActive = 1) ~> derivedColumn1",
+						"derivedColumn1 select(mapColumn(",
+						"          Index = source1@Index,",
+						"          {Customer Id},",
+						"          {First Name},",
+						"          {Last Name},",
+						"          Company = source1@Company,",
+						"          City = source1@City,",
+						"          Country = source1@Country,",
+						"          {Phone 1},",
+						"          {Phone 2},",
+						"          Email = source1@Email,",
+						"          {Subscription Date},",
+						"          Website = source1@Website,",
+						"          IsActive",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectsourcecolumns",
+						"lookup1 filter(!isNull(customerid) && ((first_name!={First Name}) || (last_name!={Last Name}) || (source1@City !=srclookup@city) ||\r",
+						"(source1@Country !=srclookup@country))) ~> update",
+						"update derive(IsActive = 0) ~> derivedColumnipdate",
+						"derivedColumnipdate select(mapColumn(",
+						"          Surrogate_key,",
+						"          index = srclookup@index,",
+						"          customerid,",
+						"          first_name,",
+						"          last_name,",
+						"          company = srclookup@company,",
+						"          city = srclookup@city,",
+						"          country = srclookup@country,",
+						"          phone1,",
+						"          phone2,",
+						"          email = srclookup@email,",
+						"          subscription_date,",
+						"          website = srclookup@website,",
+						"          IsActive",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectlookupcolumns",
+						"selectlookupcolumns alterRow(updateIf(1==1)) ~> alterRowupdate",
+						"selectsourcecolumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Surrogate_key as integer,",
+						"          customerid as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company as string,",
+						"          city as string,",
+						"          country as string,",
+						"          phone as string,",
+						"          email as string,",
+						"          subscription_date as date,",
+						"          website as string,",
+						"          IsActive as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          customerid = {Customer Id},",
+						"          first_name = {First Name},",
+						"          last_name = {Last Name},",
+						"          company = Company,",
+						"          city = City,",
+						"          country = Country,",
+						"          phone = Index,",
+						"          email = Email,",
+						"          subscription_date = {Subscription Date},",
+						"          website = Website,",
+						"          IsActive",
+						"     )) ~> sink1",
+						"alterRowupdate sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Surrogate_key as integer,",
+						"          customerid as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company as string,",
+						"          city as string,",
+						"          country as string,",
+						"          phone as string,",
+						"          email as string,",
+						"          subscription_date as date,",
+						"          website as string,",
+						"          IsActive as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:true,",
+						"     upsertable:false,",
+						"     keys:['Surrogate_key','customerid','first_name','last_name','company','city','country','email','subscription_date','website'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Surrogate_key,",
+						"          customerid,",
+						"          first_name,",
+						"          last_name,",
+						"          company,",
+						"          city,",
+						"          country,",
+						"          phone = phone1,",
+						"          email,",
+						"          subscription_date,",
+						"          website,",
+						"          IsActive",
+						"     )) ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Incremental_using_lookup')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Azure_SQL_DB",
+								"type": "DatasetReference"
+							},
+							"name": "BooksStage"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_Azure_SQL_DB_DIM",
+								"type": "DatasetReference"
+							},
+							"name": "BooksDim"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_Azure_SQL_DB_DIM",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_Azure_SQL_DB_DIM",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "lookupDim"
+						},
+						{
+							"name": "split1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Bookid as string,",
+						"          author as string,",
+						"          description as string,",
+						"          genre as string,",
+						"          price as double,",
+						"          publish_date as date,",
+						"          title as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> BooksStage",
+						"source(output(",
+						"          Surrogate_key as integer,",
+						"          Bookid as string,",
+						"          author as string,",
+						"          description as string,",
+						"          genre as string,",
+						"          price as double,",
+						"          publish_date as date,",
+						"          title as string,",
+						"          lastdatemodified as date,",
+						"          hashcolumn as binary",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> BooksDim",
+						"BooksStage derive(Hashcolumn = toBinary(md5(author+genre+title)),",
+						"          lastdatemodified = currentDate()) ~> derivedColumn1",
+						"select1, BooksDim lookup(stg_Bookid == Bookid,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> lookupDim",
+						"lookupDim split(isNull(Bookid),",
+						"     !isNull(Bookid) && notEquals(derived_Hashcolumn, hashcolumn),",
+						"     disjoint: false) ~> split1@(Newrecords, updaterecords, Nochange)",
+						"derivedColumn1 select(mapColumn(",
+						"          stg_Bookid = Bookid,",
+						"          stg_author = author,",
+						"          stg_description = description,",
+						"          stg_genre = genre,",
+						"          stg_price = price,",
+						"          stg_publish_date = publish_date,",
+						"          stg_title = title,",
+						"          derived_Hashcolumn = Hashcolumn,",
+						"          derived_lastdatemodified = lastdatemodified",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"split1@updaterecords alterRow(updateIf(true())) ~> alterRow1",
+						"split1@Newrecords sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Bookid = stg_Bookid,",
+						"          author = stg_author,",
+						"          description = stg_description,",
+						"          genre = stg_genre,",
+						"          price = stg_price,",
+						"          publish_date = stg_publish_date,",
+						"          title = stg_title,",
+						"          hashcolumn = derived_Hashcolumn,",
+						"          lastdatemodified = derived_lastdatemodified",
+						"     )) ~> sink1",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:true,",
+						"     upsertable:false,",
+						"     keys:['Bookid'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Bookid = stg_Bookid,",
+						"          author = stg_author,",
+						"          description = stg_description,",
+						"          genre = stg_genre,",
+						"          price = stg_price,",
+						"          publish_date = stg_publish_date,",
+						"          title = stg_title,",
+						"          Hashcolumn = derived_Hashcolumn,",
+						"          lastdatemodified = derived_lastdatemodified",
+						"     )) ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCD2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Customers",
+								"type": "DatasetReference"
+							},
+							"name": "Customers"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_AzureSQLDB",
+								"type": "DatasetReference"
+							},
+							"name": "Customer1Table"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_AzureSQLDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_AzureSQLDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "AddingIsActive",
+							"description": "Creating/updating the columns ' Customer Id, First Name, Last Name, Company, City, Country, Phone 1, Phone 2, Email, Subscription Date, Website, IsActive'"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "lookupsink"
+						},
+						{
+							"name": "filterexistingrows"
+						},
+						{
+							"name": "select2"
+						},
+						{
+							"name": "derivedcolupdateIsActive"
+						},
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          {Customer Id} as string,",
+						"          {First Name} as string,",
+						"          {Last Name} as string,",
+						"          Company as string,",
+						"          City as string,",
+						"          Country as string,",
+						"          {Phone 1} as string,",
+						"          {Phone 2} as string,",
+						"          Email as string,",
+						"          {Subscription Date} as string,",
+						"          Website as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Customers",
+						"source(output(",
+						"          Surrogate_key as integer,",
+						"          index as string,",
+						"          customerid as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company as string,",
+						"          city as string,",
+						"          country as string,",
+						"          phone1 as string,",
+						"          phone2 as string,",
+						"          email as string,",
+						"          subscription_date as string,",
+						"          website as string,",
+						"          IsActive as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select * from customers where IsActive=1',",
+						"     format: 'query') ~> Customer1Table",
+						"Customers derive(IsActive = 1) ~> AddingIsActive",
+						"Customer1Table select(mapColumn(",
+						"          SQL_Surrogate_key = Surrogate_key,",
+						"          SQL_index = index,",
+						"          SQL_customerid = customerid,",
+						"          SQL_first_name = first_name,",
+						"          SQL_last_name = last_name,",
+						"          SQL_company = company,",
+						"          SQL_city = city,",
+						"          SQL_country = country,",
+						"          SQL_phone1 = phone1,",
+						"          SQL_phone2 = phone2,",
+						"          SQL_email = email,",
+						"          SQL_subscription_date = subscription_date,",
+						"          SQL_website = website,",
+						"          SQL_IsActive = IsActive",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"Customers, select1 lookup({Customer Id} == SQL_customerid,",
+						"     multiple: true,",
+						"     broadcast: 'auto')~> lookupsink",
+						"lookupsink filter(!isNull(SQL_customerid)) ~> filterexistingrows",
+						"filterexistingrows select(mapColumn(",
+						"          SQL_Surrogate_key,",
+						"          SQL_index,",
+						"          SQL_customerid,",
+						"          SQL_first_name,",
+						"          SQL_last_name,",
+						"          SQL_company,",
+						"          SQL_city,",
+						"          SQL_country,",
+						"          SQL_phone1,",
+						"          SQL_phone2,",
+						"          SQL_email,",
+						"          SQL_subscription_date,",
+						"          SQL_website,",
+						"          SQL_IsActive",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2 derive(SQL_IsActive = 0) ~> derivedcolupdateIsActive",
+						"derivedcolupdateIsActive alterRow(updateIf(1==1)) ~> alterRow1",
+						"AddingIsActive sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Surrogate_key as integer,",
+						"          customerid as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company as string,",
+						"          city as string,",
+						"          country as string,",
+						"          phone as string,",
+						"          email as string,",
+						"          subscription_date as date,",
+						"          website as string,",
+						"          IsActive as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 2,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          customerid = {Customer Id},",
+						"          first_name = {First Name},",
+						"          last_name = {Last Name},",
+						"          company = Company,",
+						"          city = City,",
+						"          country = Country,",
+						"          phone = {Phone 1},",
+						"          email = Email,",
+						"          website = Website,",
+						"          IsActive",
+						"     )) ~> sink1",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Surrogate_key as integer,",
+						"          customerid as string,",
+						"          first_name as string,",
+						"          last_name as string,",
+						"          company as string,",
+						"          city as string,",
+						"          country as string,",
+						"          phone as string,",
+						"          email as string,",
+						"          subscription_date as date,",
+						"          website as string,",
+						"          IsActive as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:true,",
+						"     upsertable:false,",
+						"     keys:['Surrogate_key','customerid','first_name','last_name','city','country'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Surrogate_key = SQL_Surrogate_key,",
+						"          customerid = SQL_customerid,",
+						"          first_name = SQL_first_name,",
+						"          last_name = SQL_last_name,",
+						"          company = SQL_company,",
+						"          city = SQL_city,",
+						"          country = SQL_country,",
+						"          phone = SQL_phone1,",
+						"          email = SQL_email,",
+						"          subscription_date = SQL_subscription_date,",
+						"          website = SQL_website,",
+						"          IsActive = SQL_IsActive",
+						"     )) ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/xml_covid_dataset')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_azure_blob_covid_dataset",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_Azure_SQL_DB_Covid",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "flatten1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          row as (row as ({@_address} as string, {@_id} as string, {@_position} as boolean, {@_uuid} as string, age as string, age_num as double, estimate as double, flag as string, indicator as string, stub_label as string, stub_label_num as double, stub_name as string, stub_name_num as short, unit as string, unit_num as short, year as short, year_num as short)[])",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     limit: 10,",
+						"     ignoreNoFilesFound: false,",
+						"     validationMode: 'none',",
+						"     namespaces: true) ~> source1",
+						"source1 foldDown(unroll(row.row),",
+						"     mapColumn(",
+						"          address = row.row.{@_address},",
+						"          id = row.row.{@_id},",
+						"          position = row.row.{@_position},",
+						"          uuid = row.row.{@_uuid},",
+						"          age = row.row.age,",
+						"          age_num = row.row.age_num,",
+						"          estimate = row.row.estimate,",
+						"          flag = row.row.flag,",
+						"          indicator = row.row.indicator,",
+						"          stub_label = row.row.stub_label,",
+						"          stub_label_num = row.row.stub_label_num,",
+						"          stub_name = row.row.stub_name,",
+						"          stub_name_num = row.row.stub_name_num,",
+						"          unit = row.row.unit,",
+						"          unit_num = row.row.unit_num,",
+						"          year = row.row.year,",
+						"          year_num = row.row.year_num",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flatten1",
+						"flatten1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          address,",
+						"          id,",
+						"          position,",
+						"          uuid,",
+						"          age,",
+						"          age_num,",
+						"          estimate,",
+						"          flag,",
+						"          indicator,",
+						"          stub_label,",
+						"          stub_label_num,",
+						"          stub_name,",
+						"          stub_name_num,",
+						"          unit,",
+						"          unit_num,",
+						"          year,",
+						"          year_num",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_Covid_dataset')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "xml_covid_dataset",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {
+										"TableName": "Covid_Stage"
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/xml_covid_dataset')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_HistoryHandling')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "HandlingHistory",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "HandlingHistory",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"srclookup": {},
+									"sink1": {},
+									"sink2": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/HandlingHistory')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_Incremental')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Incremental_using_lookup",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Incremental_using_lookup",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"BooksStage": {},
+									"BooksDim": {},
+									"sink1": {},
+									"sink2": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Incremental_using_lookup')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/xml file loading')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Booksxml",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"Booksxml": {},
+									"BooksStage": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Booksxml')]"
 			]
 		}
 	]

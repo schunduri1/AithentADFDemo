@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1'"
 		},
+		"LS_Azure_SQL_DB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_Azure_SQL_DB'"
+		},
 		"ls_AzureBlob_raw_customers_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_AzureBlob_raw_customers'"
@@ -27,13 +31,21 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_AzureSQLDB_Customers'"
 		},
-		"ls_AzureSQLDB_sink_Customers_password": {
+		"ls_AzureSQLDB_customers1_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_AzureSQLDB_sink_Customers'"
+			"metadata": "Secure string for 'connectionString' of 'ls_AzureSQLDB_customers1'"
+		},
+		"ls_AzureSQLDB_sink_Customers_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_AzureSQLDB_sink_Customers'"
 		},
 		"ls_AzureSqlDatabase_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_AzureSqlDatabase'"
+		},
+		"ls_azureblob_raw_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_azureblob_raw'"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_server": {
 			"type": "string",
@@ -44,18 +56,6 @@
 			"defaultValue": "SampleDB"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "sqladmin"
-		},
-		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sqldatabase-edri.database.windows.net"
-		},
-		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SampleDB"
-		},
-		"ls_AzureSQLDB_sink_Customers_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "sqladmin"
 		},
@@ -107,17 +107,26 @@
 					"AzureSqlDatabase1_password": {
 						"value": "[parameters('AzureSqlDatabase1_password')]"
 					},
+					"LS_Azure_SQL_DB_connectionString": {
+						"value": "[parameters('LS_Azure_SQL_DB_connectionString')]"
+					},
 					"ls_AzureBlob_raw_customers_connectionString": {
 						"value": "[parameters('ls_AzureBlob_raw_customers_connectionString')]"
 					},
 					"ls_AzureSQLDB_Customers_connectionString": {
 						"value": "[parameters('ls_AzureSQLDB_Customers_connectionString')]"
 					},
-					"ls_AzureSQLDB_sink_Customers_password": {
-						"value": "[parameters('ls_AzureSQLDB_sink_Customers_password')]"
+					"ls_AzureSQLDB_customers1_connectionString": {
+						"value": "[parameters('ls_AzureSQLDB_customers1_connectionString')]"
+					},
+					"ls_AzureSQLDB_sink_Customers_connectionString": {
+						"value": "[parameters('ls_AzureSQLDB_sink_Customers_connectionString')]"
 					},
 					"ls_AzureSqlDatabase_password": {
 						"value": "[parameters('ls_AzureSqlDatabase_password')]"
+					},
+					"ls_azureblob_raw_connectionString": {
+						"value": "[parameters('ls_azureblob_raw_connectionString')]"
 					},
 					"AzureSqlDatabase1_properties_typeProperties_server": {
 						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]"
@@ -127,15 +136,6 @@
 					},
 					"AzureSqlDatabase1_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]"
-					},
-					"ls_AzureSQLDB_sink_Customers_properties_typeProperties_server": {
-						"value": "[parameters('ls_AzureSQLDB_sink_Customers_properties_typeProperties_server')]"
-					},
-					"ls_AzureSQLDB_sink_Customers_properties_typeProperties_database": {
-						"value": "[parameters('ls_AzureSQLDB_sink_Customers_properties_typeProperties_database')]"
-					},
-					"ls_AzureSQLDB_sink_Customers_properties_typeProperties_userName": {
-						"value": "[parameters('ls_AzureSQLDB_sink_Customers_properties_typeProperties_userName')]"
 					},
 					"ls_AzureSqlDatabase_properties_typeProperties_server": {
 						"value": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_server')]"
@@ -149,6 +149,26 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "ADF-Aithent-Conversion-test_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ADF-Aithent-Conversion-test_ArmTemplate_0')]"
+			]
 		}
 	]
 }
