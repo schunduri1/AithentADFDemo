@@ -1,0 +1,51 @@
+{
+	"name": "xml_customer_orders",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Azureblob_xml_CustomerOrders",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {http://www.adventure-works.com,Root} as ({http://www.adventure-works.com,Customers} as ({http://www.adventure-works.com,Customer} as ({@CustomerID} as string, {http://www.adventure-works.com,CompanyName} as string, {http://www.adventure-works.com,ContactName} as string, {http://www.adventure-works.com,ContactTitle} as string, {http://www.adventure-works.com,Fax} as string, {http://www.adventure-works.com,FullAddress} as ({http://www.adventure-works.com,Address} as string, {http://www.adventure-works.com,City} as string, {http://www.adventure-works.com,Country} as string, {http://www.adventure-works.com,PostalCode} as integer, {http://www.adventure-works.com,Region} as string), {http://www.adventure-works.com,Phone} as string)[]), {http://www.adventure-works.com,Orders} as ({http://www.adventure-works.com,Order} as ({http://www.adventure-works.com,CustomerID} as string, {http://www.adventure-works.com,EmployeeID} as short, {http://www.adventure-works.com,OrderDate} as string, {http://www.adventure-works.com,RequiredDate} as string, {http://www.adventure-works.com,ShipInfo} as ({@ShippedDate} as string, {http://www.adventure-works.com,Freight} as double, {http://www.adventure-works.com,ShipAddress} as string, {http://www.adventure-works.com,ShipCity} as string, {http://www.adventure-works.com,ShipCountry} as string, {http://www.adventure-works.com,ShipName} as string, {http://www.adventure-works.com,ShipPostalCode} as integer, {http://www.adventure-works.com,ShipRegion} as string, {http://www.adventure-works.com,ShipVia} as short))[]))",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     validationMode: 'none',",
+				"     namespaces: true) ~> source1",
+				"source1 foldDown(unrollMultiple({http://www.adventure-works.com,Root}.{http://www.adventure-works.com,Customers}.{http://www.adventure-works.com,Customer},{http://www.adventure-works.com,Root}.{http://www.adventure-works.com,Orders}.{http://www.adventure-works.com,Order}),",
+				"     mapColumn(",
+				"          customer_id = {http://www.adventure-works.com,Root}.{http://www.adventure-works.com,Customers}.{http://www.adventure-works.com,Customer}.{@CustomerID},",
+				"          company_name = {http://www.adventure-works.com,Root}.{http://www.adventure-works.com,Customers}.{http://www.adventure-works.com,Customer}.{http://www.adventure-works.com,CompanyName},",
+				"          contact_name = {http://www.adventure-works.com,Root}.{http://www.adventure-works.com,Customers}.{http://www.adventure-works.com,Customer}.{http://www.adventure-works.com,ContactName},",
+				"          contact_title = {http://www.adventure-works.com,Root}.{http://www.adventure-works.com,Customers}.{http://www.adventure-works.com,Customer}.{http://www.adventure-works.com,ContactTitle},",
+				"          fax = {http://www.adventure-works.com,Root}.{http://www.adventure-works.com,Customers}.{http://www.adventure-works.com,Customer}.{http://www.adventure-works.com,Fax}",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}
