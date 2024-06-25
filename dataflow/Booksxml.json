@@ -13,17 +13,34 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
 			"scriptLines": [
 				"parameters{",
 				"     sinkSQLTlanguages as string (Languages),",
 				"     sinkSQLTypes as string (Types)",
 				"}",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          catalog as (book as ({@id} as string, author as string, description as string, genre as string, languages as (language as string[]), price as double, publish_date as date, title as string, types as ({_value_} as string, type as string[]))[])",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
-				"     namespaces: true) ~> source1"
+				"     namespaces: true) ~> source1",
+				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language,catalog.book.types.type),",
+				"     mapColumn(",
+				"          id = catalog.book.{@id},",
+				"          author = catalog.book.author,",
+				"          description = catalog.book.description,",
+				"          genre = catalog.book.genre,",
+				"          language = catalog.book.languages.language",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
 			]
 		}
 	}
