@@ -1,0 +1,24 @@
+{
+	"name": "ds_SQL_ErrorRows",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_SQL_DB",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"errortable": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().errortable",
+				"type": "Expression"
+			}
+		}
+	}
+}
