@@ -14,9 +14,17 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "ds_SQL_Correct_Rows",
+						"type": "DatasetReference"
+					},
 					"name": "sink1"
 				},
 				{
+					"dataset": {
+						"referenceName": "ds_SQL_ErrorRows",
+						"type": "DatasetReference"
+					},
 					"name": "sink2"
 				}
 			],
@@ -53,12 +61,24 @@
 				"     disjoint: false) ~> split1@(badrecords, Newrecords)",
 				"split1@badrecords sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
 				"split1@Newrecords sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink2"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 			]
 		}
 	}
