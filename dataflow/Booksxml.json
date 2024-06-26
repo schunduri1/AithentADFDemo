@@ -21,6 +21,10 @@
 					"name": "sink1"
 				},
 				{
+					"dataset": {
+						"referenceName": "DS_Azure_SQL_DB",
+						"type": "DatasetReference"
+					},
 					"name": "sink2"
 				}
 			],
@@ -79,9 +83,15 @@
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 2) ~> sink2"
+				"     saveOrder: 2,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 			]
 		}
 	}
