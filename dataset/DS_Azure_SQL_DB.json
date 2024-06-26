@@ -5,12 +5,20 @@
 			"referenceName": "LS_Azure_SQL_DB",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"sink_sqltable_languages": {
+				"type": "string"
+			},
+			"sink_sqltable_types": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "sink_SQL_Languages"
+			"table": ""
 		}
 	}
 }
