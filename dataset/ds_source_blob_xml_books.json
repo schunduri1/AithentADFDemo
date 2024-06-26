@@ -1,0 +1,18 @@
+{
+	"name": "ds_source_blob_xml_books",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azureblob_raw",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Xml",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Book_Dataset2.xml",
+				"container": "raw"
+			}
+		}
+	}
+}
