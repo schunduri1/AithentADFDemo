@@ -1,0 +1,40 @@
+{
+	"name": "ErrorHandling",
+	"properties": {
+		"activities": [
+			{
+				"name": "xml_error_handling",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "xml_error_handling",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"sink1": {
+								"CorrectRows": "table_correct"
+							},
+							"sink2": {
+								"errortable": "table_error"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
