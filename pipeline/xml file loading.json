@@ -17,7 +17,15 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Booksxml",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"sink1": {
+								"sink_SQL_parent": "tableLanguage"
+							},
+							"sink2": {
+								"sink_SQL_Child": "tableType"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
