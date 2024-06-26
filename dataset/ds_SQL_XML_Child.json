@@ -15,7 +15,10 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": ""
+			"table": {
+				"value": "@dataset().sink_SQL_Child",
+				"type": "Expression"
+			}
 		}
 	}
 }
