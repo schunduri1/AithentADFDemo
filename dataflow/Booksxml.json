@@ -15,14 +15,14 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DS_Azure_SQL_DB",
+						"referenceName": "ds_SQL_XML_Parent",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
 				},
 				{
 					"dataset": {
-						"referenceName": "DS_Azure_SQL_DB",
+						"referenceName": "ds_SQL_XML_Child",
 						"type": "DatasetReference"
 					},
 					"name": "sink2"
