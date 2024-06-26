@@ -1,0 +1,24 @@
+{
+	"name": "ds_SQL_Correct_Rows",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_SQL_DB",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"CorrectRows": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": {
+				"value": "@dataset().CorrectRows",
+				"type": "Expression"
+			}
+		}
+	}
+}
