@@ -6,10 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"sink_sqltable_languages": {
-				"type": "string"
-			},
-			"sink_sqltable_types": {
+			"sink_sqltable": {
 				"type": "string"
 			}
 		},
@@ -18,7 +15,10 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": ""
+			"table": {
+				"value": "@dataset().sink_sqltable_languages",
+				"type": "Expression"
+			}
 		}
 	}
 }
