@@ -30,7 +30,10 @@
 			],
 			"transformations": [
 				{
-					"name": "flatten1"
+					"name": "flattenlanguagetype"
+				},
+				{
+					"name": "select1"
 				},
 				{
 					"name": "select2"
@@ -58,13 +61,30 @@
 				"          type = catalog.book.types.type",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"flatten1 select(mapColumn(",
+				"     skipDuplicateMapOutputs: false) ~> flattenlanguagetype",
+				"flattenlanguagetype select(mapColumn(",
 				"          id,",
 				"          author,",
 				"          description,",
 				"          genre,",
-				"          language",
+				"          language,",
+				"          price,",
+				"          publish_date,",
+				"          title,",
+				"          type",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"flattenlanguagetype select(mapColumn(",
+				"          id,",
+				"          author,",
+				"          description,",
+				"          genre,",
+				"          language,",
+				"          price,",
+				"          publish_date,",
+				"          title,",
+				"          type",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
@@ -80,7 +100,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
-				"select2 sink(allowSchemaDrift: true,",
+				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
