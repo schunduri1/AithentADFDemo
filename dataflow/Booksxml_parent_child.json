@@ -12,7 +12,15 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL_DB_Language",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "flatten1"
@@ -27,7 +35,10 @@
 					"name": "derivedColumn2"
 				},
 				{
-					"name": "select1"
+					"name": "selectonlybookcolumns"
+				},
+				{
+					"name": "selectonlylanguagecolumns"
 				}
 			],
 			"scriptLines": [
@@ -62,6 +73,18 @@
 				"          author,",
 				"          description,",
 				"          genre,",
+				"          price,",
+				"          publish_date,",
+				"          title,",
+				"          id",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectonlybookcolumns",
+				"split1 select(mapColumn(",
+				"          book_id,",
+				"          author,",
+				"          description,",
+				"          genre,",
 				"          language,",
 				"          price,",
 				"          publish_date,",
@@ -71,7 +94,17 @@
 				"          {language.bookid}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> selectonlylanguagecolumns",
+				"selectonlybookcolumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
