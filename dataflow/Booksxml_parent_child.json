@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_Azure_SQL_DB_Language",
+						"referenceName": "ds_Azure_SQL_DB_Books",
 						"type": "DatasetReference"
 					},
 					"name": "Books"
