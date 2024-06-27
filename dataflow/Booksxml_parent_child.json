@@ -21,13 +21,13 @@
 					"name": "split1"
 				},
 				{
-					"name": "select1"
-				},
-				{
 					"name": "derivedColumn1"
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -54,20 +54,24 @@
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
 				"derivedColumn2 split(1==1,",
 				"     disjoint: false) ~> split1@(Parent, )",
+				"flatten1 derive(id = uuid(),",
+				"          Languageid = uuid()) ~> derivedColumn1",
+				"derivedColumn1 derive({language.bookid} = id) ~> derivedColumn2",
 				"split1@Parent select(mapColumn(",
-				"          id,",
+				"          book_id,",
 				"          author,",
 				"          description,",
 				"          genre,",
+				"          language,",
 				"          price,",
 				"          publish_date,",
-				"          title",
+				"          title,",
+				"          id,",
+				"          Languageid,",
+				"          {language.bookid}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"flatten1 derive(id = uuid(),",
-				"          Languageid = uuid()) ~> derivedColumn1",
-				"derivedColumn1 derive({language.bookid} = id) ~> derivedColumn2"
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}
