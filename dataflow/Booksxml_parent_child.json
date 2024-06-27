@@ -63,7 +63,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"flatten1 derive(Book_id = ERROR_FUNCTION('')) ~> derivedColumn1"
+				"flatten1 derive(id = uuid(),",
+				"          Languageid = uuid()) ~> derivedColumn1"
 			]
 		}
 	}
