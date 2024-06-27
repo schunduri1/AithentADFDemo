@@ -25,6 +25,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -49,14 +52,13 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"derivedColumn1 split(1==1,",
+				"derivedColumn2 split(1==1,",
 				"     disjoint: false) ~> split1@(Parent, )",
 				"split1@Parent select(mapColumn(",
 				"          id,",
 				"          author,",
 				"          description,",
 				"          genre,",
-				"          language,",
 				"          price,",
 				"          publish_date,",
 				"          title",
@@ -64,7 +66,8 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"flatten1 derive(id = uuid(),",
-				"          Languageid = uuid()) ~> derivedColumn1"
+				"          Languageid = uuid()) ~> derivedColumn1",
+				"derivedColumn1 derive({language.bookid} = id) ~> derivedColumn2"
 			]
 		}
 	}
