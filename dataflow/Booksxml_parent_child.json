@@ -104,7 +104,17 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          book_id,",
+				"          author,",
+				"          description,",
+				"          genre,",
+				"          price,",
+				"          publish_date,",
+				"          title,",
+				"          id",
+				"     )) ~> sink1"
 			]
 		}
 	}
