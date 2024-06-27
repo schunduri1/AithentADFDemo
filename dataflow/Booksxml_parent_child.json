@@ -19,13 +19,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "Books"
-				},
-				{
-					"dataset": {
-						"referenceName": "ds_Azure_SQL_DB_Language",
-						"type": "DatasetReference"
-					},
-					"name": "Language"
 				}
 			],
 			"transformations": [
@@ -45,7 +38,7 @@
 					"name": "selectonlybookcolumns"
 				},
 				{
-					"name": "selectonlylanguagecolumns"
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -88,13 +81,13 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectonlybookcolumns",
-				"split1@default select(mapColumn(",
+				"split1@Child select(mapColumn(",
 				"          language,",
 				"          Languageid,",
 				"          {language.bookid}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> selectonlylanguagecolumns",
+				"     skipDuplicateMapOutputs: true) ~> select1",
 				"selectonlybookcolumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -114,17 +107,7 @@
 				"          publish_date,",
 				"          title,",
 				"          id",
-				"     )) ~> Books",
-				"selectonlylanguagecolumns sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> Language"
+				"     )) ~> Books"
 			]
 		}
 	}
