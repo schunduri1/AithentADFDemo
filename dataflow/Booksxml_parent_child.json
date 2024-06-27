@@ -18,7 +18,13 @@
 					"name": "flatten1"
 				},
 				{
+					"name": "split1"
+				},
+				{
 					"name": "select1"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -32,7 +38,7 @@
 				"     namespaces: true) ~> source1",
 				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language),",
 				"     mapColumn(",
-				"          id = catalog.book.{@id},",
+				"          book_id = catalog.book.{@id},",
 				"          author = catalog.book.author,",
 				"          description = catalog.book.description,",
 				"          genre = catalog.book.genre,",
@@ -43,7 +49,9 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"flatten1 select(mapColumn(",
+				"derivedColumn1 split(1==1,",
+				"     disjoint: false) ~> split1@(Parent, )",
+				"split1@Parent select(mapColumn(",
 				"          id,",
 				"          author,",
 				"          description,",
@@ -54,7 +62,8 @@
 				"          title",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"flatten1 derive(Book_id = ERROR_FUNCTION('')) ~> derivedColumn1"
 			]
 		}
 	}
