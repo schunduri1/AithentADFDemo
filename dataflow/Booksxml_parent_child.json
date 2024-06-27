@@ -12,31 +12,10 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "ds_SQL_XML_Parent",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				},
-				{
-					"dataset": {
-						"referenceName": "ds_SQL_XML_Child",
-						"type": "DatasetReference"
-					},
-					"name": "sink2"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
-					"name": "flattenlanguagetype"
-				},
-				{
-					"name": "select1"
-				},
-				{
-					"name": "select2"
+					"name": "flatten1"
 				},
 				{
 					"name": "surrogateKey1"
@@ -51,7 +30,7 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
-				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language,catalog.book.types.type),",
+				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language),",
 				"     mapColumn(",
 				"          id = catalog.book.{@id},",
 				"          author = catalog.book.author,",
@@ -60,60 +39,13 @@
 				"          language = catalog.book.languages.language,",
 				"          price = catalog.book.price,",
 				"          publish_date = catalog.book.publish_date,",
-				"          title = catalog.book.title,",
-				"          type = catalog.book.types.type",
+				"          title = catalog.book.title",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flattenlanguagetype",
-				"flattenlanguagetype select(mapColumn(",
-				"          id,",
-				"          author,",
-				"          description,",
-				"          genre,",
-				"          price,",
-				"          publish_date,",
-				"          title,",
-				"          type",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"surrogateKey1 select(mapColumn(",
-				"          id,",
-				"          author,",
-				"          description,",
-				"          genre,",
-				"          language,",
-				"          price,",
-				"          publish_date,",
-				"          title",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2",
-				"flattenlanguagetype keyGenerate(output(book_id as long),",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 keyGenerate(output(Book_id as long),",
 				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
-				"select2 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
-				"select1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 2,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+				"     stepValue: 1L) ~> surrogateKey1"
 			]
 		}
 	}
