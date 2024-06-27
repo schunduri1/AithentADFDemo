@@ -10,6 +10,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1"
+				},
+				{
+					"name": "source2"
 				}
 			],
 			"sinks": [],
@@ -18,7 +21,13 @@
 					"name": "flatten1"
 				},
 				{
-					"name": "surrogateKey1"
+					"name": "flatten2"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -30,7 +39,9 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
-				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language),",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source2",
+				"source1 foldDown(unroll(catalog.book),",
 				"     mapColumn(",
 				"          id = catalog.book.{@id},",
 				"          author = catalog.book.author,",
@@ -43,9 +54,23 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"flatten1 keyGenerate(output(Book_id as long),",
-				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1"
+				"source2 foldDown(unroll(),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten2",
+				"flatten1 select(mapColumn(",
+				"          id,",
+				"          author,",
+				"          description,",
+				"          genre,",
+				"          language,",
+				"          price,",
+				"          publish_date,",
+				"          title",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"flatten2 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2"
 			]
 		}
 	}
