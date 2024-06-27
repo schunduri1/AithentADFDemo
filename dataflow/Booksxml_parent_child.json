@@ -33,19 +33,13 @@
 					"name": "flatten1"
 				},
 				{
-					"name": "split1"
-				},
-				{
-					"name": "derivedColumn1"
-				},
-				{
-					"name": "derivedColumn2"
-				},
-				{
 					"name": "selectonlybookcolumns"
 				},
 				{
 					"name": "select1"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -70,13 +64,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"derivedColumn2 split(isNull(language),",
-				"     !isNull(language),",
-				"     disjoint: false) ~> split1@(Parent, Child, default)",
-				"flatten1 derive(id = uuid(),",
-				"          Languageid = uuid()) ~> derivedColumn1",
-				"derivedColumn1 derive({language.bookid} = id) ~> derivedColumn2",
-				"split1@Parent select(mapColumn(",
+				"flatten1 select(mapColumn(",
 				"          book_id,",
 				"          author,",
 				"          description,",
@@ -88,13 +76,14 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectonlybookcolumns",
-				"split1@Child select(mapColumn(",
+				"derivedColumn1 select(mapColumn(",
 				"          language,",
 				"          Languageid,",
 				"          {language.bookid}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
+				"flatten1 derive(id = uuid()) ~> derivedColumn1",
 				"selectonlybookcolumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
