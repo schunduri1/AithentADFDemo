@@ -18,14 +18,14 @@
 						"referenceName": "ds_Azure_SQL_DB_Language",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "Books"
 				},
 				{
 					"dataset": {
 						"referenceName": "ds_Azure_SQL_DB_Books",
 						"type": "DatasetReference"
 					},
-					"name": "sink2"
+					"name": "Language"
 				}
 			],
 			"transformations": [
@@ -113,7 +113,7 @@
 				"          publish_date,",
 				"          title,",
 				"          id",
-				"     )) ~> sink1",
+				"     )) ~> Books",
 				"selectonlylanguagecolumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -123,7 +123,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+				"     errorHandlingOption: 'stopOnFirstError') ~> Language"
 			]
 		}
 	}
