@@ -22,7 +22,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_Azure_SQL_DB_Books",
+						"referenceName": "ds_Azure_SQL_DB_Language",
 						"type": "DatasetReference"
 					},
 					"name": "Language"
