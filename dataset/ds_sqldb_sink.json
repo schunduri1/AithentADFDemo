@@ -2,7 +2,7 @@
 	"name": "ds_sqldb_sink",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sqlsb_sink",
+			"referenceName": "LS_Azure_SQL_DB",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
