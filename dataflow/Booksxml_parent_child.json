@@ -15,10 +15,10 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DS_AzureSQLDB",
+						"referenceName": "ds_Azure_SQl_DB_Books",
 						"type": "DatasetReference"
 					},
-					"name": "BooksTable"
+					"name": "sink1"
 				}
 			],
 			"transformations": [
@@ -65,20 +65,6 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          Surrogate_key as integer,",
-				"          customerid as string,",
-				"          first_name as string,",
-				"          last_name as string,",
-				"          company as string,",
-				"          city as string,",
-				"          country as string,",
-				"          phone as string,",
-				"          email as string,",
-				"          subscription_date as date,",
-				"          website as string,",
-				"          IsActive as string",
-				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
@@ -90,12 +76,12 @@
 				"     mapColumn(",
 				"          BookId = {@id},",
 				"          author,",
-				"          description,",
+				"          Title = title,",
 				"          genre,",
 				"          price,",
 				"          publish_date,",
-				"          title",
-				"     )) ~> BooksTable"
+				"          description",
+				"     )) ~> sink1"
 			]
 		}
 	}
