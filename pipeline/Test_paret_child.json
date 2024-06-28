@@ -17,7 +17,12 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Test_parent_child",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"sink1": {
+								"Books_table": "Books_Table"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
