@@ -5,12 +5,20 @@
 			"referenceName": "LS_Azure_SQL_DB",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"Books_table": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "Books_table"
+			"table": {
+				"value": "@dataset().Books_table",
+				"type": "Expression"
+			}
 		}
 	}
 }
