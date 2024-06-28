@@ -10,6 +10,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1"
+				},
+				{
+					"name": "source2"
 				}
 			],
 			"sinks": [
@@ -38,6 +41,8 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source2",
 				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language),",
 				"     mapColumn(",
 				"          {@id} = catalog.book.{@id},",
@@ -72,7 +77,17 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          BookId = {@id},",
+				"          author,",
+				"          description,",
+				"          genre,",
+				"          language,",
+				"          price,",
+				"          publish_date,",
+				"          title",
+				"     )) ~> sink1"
 			]
 		}
 	}
