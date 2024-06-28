@@ -27,7 +27,7 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
-				"source1 foldDown(unrollMultiple((catalog.book),(catalog.book.languages.language)),",
+				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language),",
 				"     mapColumn(",
 				"          id = catalog.book.{@id},",
 				"          author = catalog.book.author,",
