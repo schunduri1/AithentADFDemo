@@ -52,7 +52,6 @@
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
 				"flatten1 select(mapColumn(",
-				"          id,",
 				"          author,",
 				"          description,",
 				"          genre,",
