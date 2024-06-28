@@ -30,6 +30,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -60,11 +63,13 @@
 				"          genre,",
 				"          price,",
 				"          publish_date,",
-				"          title",
+				"          title,",
+				"          BookId = id",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 derive(BookId = uuid()) ~> derivedColumn1",
+				"aggregate1 derive(BookId = uuid()) ~> derivedColumn1",
+				"select1 aggregate() ~> aggregate1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
