@@ -69,7 +69,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"window1 derive(BookId = uuid()) ~> derivedColumn1",
-				"select1 window(over(BookId)) ~> window1",
+				"select1 window(BookId = partitionId(BookId)) ~> window1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
