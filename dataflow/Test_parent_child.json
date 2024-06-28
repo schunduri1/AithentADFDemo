@@ -16,6 +16,9 @@
 			"transformations": [
 				{
 					"name": "flatten1"
+				},
+				{
+					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -39,7 +42,18 @@
 				"          title = catalog.book.title",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1"
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 select(mapColumn(",
+				"          id,",
+				"          author,",
+				"          description,",
+				"          genre,",
+				"          price,",
+				"          publish_date,",
+				"          title",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
 			]
 		}
 	}
