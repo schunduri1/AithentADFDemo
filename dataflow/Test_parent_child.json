@@ -32,7 +32,7 @@
 					"name": "derivedColumn1"
 				},
 				{
-					"name": "aggregate1"
+					"name": "window1"
 				}
 			],
 			"scriptLines": [
@@ -68,8 +68,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"aggregate1 derive(BookId = uuid()) ~> derivedColumn1",
-				"select1 aggregate() ~> aggregate1",
+				"window1 derive(BookId = uuid()) ~> derivedColumn1",
+				"select1 window(over(BookId)) ~> window1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
