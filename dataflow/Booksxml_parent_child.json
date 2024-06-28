@@ -12,34 +12,10 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "ds_Azure_SQL_DB_Books",
-						"type": "DatasetReference"
-					},
-					"name": "Books"
-				},
-				{
-					"dataset": {
-						"referenceName": "ds_Azure_SQL_DB_Language",
-						"type": "DatasetReference"
-					},
-					"name": "sink1"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "flatten1"
-				},
-				{
-					"name": "selectonlybookcolumns"
-				},
-				{
-					"name": "select1"
-				},
-				{
-					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -53,7 +29,7 @@
 				"     namespaces: true) ~> source1",
 				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language),",
 				"     mapColumn(",
-				"          book_id = catalog.book.{@id},",
+				"          {@id} = catalog.book.{@id},",
 				"          author = catalog.book.author,",
 				"          description = catalog.book.description,",
 				"          genre = catalog.book.genre,",
@@ -63,57 +39,7 @@
 				"          title = catalog.book.title",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"flatten1 select(mapColumn(",
-				"          book_id,",
-				"          author,",
-				"          description,",
-				"          genre,",
-				"          price,",
-				"          publish_date,",
-				"          title,",
-				"          id",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> selectonlybookcolumns",
-				"derivedColumn1 select(mapColumn(",
-				"          language,",
-				"          Languageid,",
-				"          {language.bookid}",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"flatten1 derive(languageid = uuid()) ~> derivedColumn1",
-				"selectonlybookcolumns sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          book_id,",
-				"          author,",
-				"          description,",
-				"          genre,",
-				"          price,",
-				"          publish_date,",
-				"          title,",
-				"          id",
-				"     )) ~> Books",
-				"select1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
 			]
 		}
 	}
