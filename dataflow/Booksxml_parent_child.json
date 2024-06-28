@@ -83,7 +83,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"flatten1 derive(id = uuid()) ~> derivedColumn1",
+				"flatten1 derive(languageid = uuid()) ~> derivedColumn1",
 				"selectonlybookcolumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
