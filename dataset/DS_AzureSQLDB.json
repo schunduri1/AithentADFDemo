@@ -2,7 +2,7 @@
 	"name": "DS_AzureSQLDB",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_AzureSQLDB_Customers",
+			"referenceName": "ls_AzureSqlDatabase",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -60,7 +60,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "customers1"
+			"table": "Books_table"
 		}
 	}
 }
