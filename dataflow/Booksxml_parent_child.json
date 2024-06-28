@@ -15,10 +15,10 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_Azure_SQL_DB_Books",
+						"referenceName": "ds_Azure_SQl_DB_Books",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "BooksTable"
 				}
 			],
 			"transformations": [
@@ -82,7 +82,7 @@
 				"          price,",
 				"          publish_date,",
 				"          title",
-				"     )) ~> sink1"
+				"     )) ~> BooksTable"
 			]
 		}
 	}
