@@ -1,0 +1,118 @@
+{
+	"name": "Test_parent_child_copy1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_blob_xml_bookdataset",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_sqldb_sink",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flatten1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          catalog as (book as ({@id} as string, author as string, description as string, genre as string, languages as (language as string[]), price as double, publish_date as date, title as string)[])",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     validationMode: 'none',",
+				"     namespaces: true) ~> source1",
+				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language),",
+				"     mapColumn(",
+				"          id = catalog.book.{@id},",
+				"          author = catalog.book.author,",
+				"          description = catalog.book.description,",
+				"          genre = catalog.book.genre,",
+				"          language = catalog.book.languages.language,",
+				"          price = catalog.book.price,",
+				"          publish_date = catalog.book.publish_date,",
+				"          title = catalog.book.title",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 select(mapColumn(",
+				"          author,",
+				"          description,",
+				"          genre,",
+				"          price,",
+				"          publish_date,",
+				"          title,",
+				"          BookId = id",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 aggregate(groupBy(author,",
+				"          BookId,",
+				"          description,",
+				"          price,",
+				"          publish_date,",
+				"          genre,",
+				"          title),",
+				"     book_id = count(BookId)) ~> aggregate1",
+				"aggregate1 derive(ID = uuid()) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          author,",
+				"          BookId,",
+				"          description,",
+				"          price,",
+				"          publish_date,",
+				"          genre,",
+				"          title,",
+				"          ID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          author,",
+				"          BookId,",
+				"          description,",
+				"          price,",
+				"          publish_date,",
+				"          genre,",
+				"          title,",
+				"          ID",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
