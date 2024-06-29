@@ -23,7 +23,10 @@
 								"Books_table": "Books_Table1"
 							},
 							"sink1": {
-								"Books_table": "Books_Table"
+								"Books_table": "Books_Table1"
+							},
+							"sink2": {
+								"Language_Table": "Language_Table"
 							}
 						}
 					},
