@@ -19,6 +19,9 @@
 						"referenceName": "Test_parent_child",
 						"type": "DataFlowReference",
 						"datasetParameters": {
+							"source3": {
+								"Books_table": "Books_Table1"
+							},
 							"sink1": {
 								"Books_table": "Books_Table"
 							}
