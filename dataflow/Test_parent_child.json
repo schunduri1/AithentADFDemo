@@ -53,6 +53,9 @@
 				},
 				{
 					"name": "flatten2"
+				},
+				{
+					"name": "lookup1"
 				}
 			],
 			"scriptLines": [
@@ -72,7 +75,16 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source2",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          author as string,",
+				"          description as string,",
+				"          genre as string,",
+				"          price as double,",
+				"          publish_date as date,",
+				"          title as string,",
+				"          BookId as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source3",
@@ -134,6 +146,10 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten2",
+				"flatten2, source3 lookup(flatten2@BookId == source3@BookId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
 				"select2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
