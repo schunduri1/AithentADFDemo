@@ -5,8 +5,19 @@
 			"referenceName": "LS_Azure_SQL_DB",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"Language_Table": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().Language_Table",
+				"type": "Expression"
+			}
+		}
 	}
 }
