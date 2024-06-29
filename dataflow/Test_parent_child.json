@@ -76,7 +76,7 @@
 				"          publish_date,",
 				"          title,",
 				"          genre),",
-				"     BookId = distinct(BookId)) ~> aggregate1",
+				"     BookId = count(BookId)) ~> aggregate1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
