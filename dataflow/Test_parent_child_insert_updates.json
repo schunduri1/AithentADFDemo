@@ -40,6 +40,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQl_DB_Books",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
 				}
 			],
 			"transformations": [
@@ -204,14 +211,14 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          ID,",
 				"          author = src_author,",
 				"          description = src_description,",
 				"          genre = src_genre,",
 				"          price,",
 				"          publish_date = src_publish_date,",
 				"          title = src_title,",
-				"          BookId = src_BookId",
+				"          BookId = src_BookId,",
+				"          hashcolumn = src_Hashcolumn",
 				"     )) ~> sink1",
 				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -231,7 +238,38 @@
 				"     mapColumn(",
 				"          BookID = ID,",
 				"          LanguageName = language",
-				"     )) ~> sink2"
+				"     )) ~> sink2",
+				"split1@Updates sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          author as string,",
+				"          description as string,",
+				"          genre as string,",
+				"          price as double,",
+				"          publish_date as date,",
+				"          title as string,",
+				"          BookId as string,",
+				"          hashcolumn as binary",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          author = src_author,",
+				"          description = src_description,",
+				"          genre = src_genre,",
+				"          price = src_price,",
+				"          publish_date = src_publish_date,",
+				"          title = src_title,",
+				"          BookId = src_BookId,",
+				"          hashcolumn = src_Hashcolumn",
+				"     )) ~> sink3"
 			]
 		}
 	}
