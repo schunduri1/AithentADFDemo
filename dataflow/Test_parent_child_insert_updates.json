@@ -79,6 +79,9 @@
 				},
 				{
 					"name": "split1"
+				},
+				{
+					"name": "alterRow1"
 				}
 			],
 			"scriptLines": [
@@ -189,6 +192,7 @@
 				"lookup2 split(isNull(BookId),",
 				"     !isNull(BookId) && notEquals(src_Hashcolumn, hashcolumn),",
 				"     disjoint: false) ~> split1@(Newrecords, Updates, nochange)",
+				"split1@Updates alterRow(updateIf(true())) ~> alterRow1",
 				"split1@Newrecords sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -239,7 +243,7 @@
 				"          BookID = ID,",
 				"          LanguageName = language",
 				"     )) ~> sink2",
-				"split1@Updates sink(allowSchemaDrift: true,",
+				"alterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          ID as integer,",
