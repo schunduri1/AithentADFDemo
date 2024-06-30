@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Test_parent_child_copy1",
+						"referenceName": "Test_parent_child_1",
 						"type": "DataFlowReference"
 					},
 					"compute": {
