@@ -7,7 +7,22 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "LanguageID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "BookID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LanguageName",
+				"type": "nvarchar"
+			}
+		],
 		"typeProperties": {
 			"schema": "dbo",
 			"table": "Language_Table"
