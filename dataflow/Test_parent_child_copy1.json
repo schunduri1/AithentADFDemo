@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_sqldb_sink",
+						"referenceName": "ds_Azure_SQl_DB_Books",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -87,13 +87,22 @@
 				"          price,",
 				"          publish_date,",
 				"          genre,",
-				"          title,",
-				"          ID",
+				"          title",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          author as string,",
+				"          description as string,",
+				"          genre as string,",
+				"          price as double,",
+				"          publish_date as date,",
+				"          title as string,",
+				"          BookId as string",
+				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
@@ -104,13 +113,12 @@
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
 				"          author,",
-				"          BookId,",
 				"          description,",
+				"          genre,",
 				"          price,",
 				"          publish_date,",
-				"          genre,",
 				"          title,",
-				"          ID",
+				"          BookId",
 				"     )) ~> sink1"
 			]
 		}
