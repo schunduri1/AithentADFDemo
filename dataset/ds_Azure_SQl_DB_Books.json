@@ -41,6 +41,10 @@
 			{
 				"name": "BookId",
 				"type": "nvarchar"
+			},
+			{
+				"name": "hashcolumn",
+				"type": "binary"
 			}
 		],
 		"typeProperties": {
