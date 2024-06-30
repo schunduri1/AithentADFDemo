@@ -1,5 +1,5 @@
 {
-	"name": "Test_parent_child_copy1",
+	"name": "Test_parent_child_1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
