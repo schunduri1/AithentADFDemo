@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Test_Parent_Child_Inserts_updates",
+				"name": "Test_Child_Inserts_updates",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
