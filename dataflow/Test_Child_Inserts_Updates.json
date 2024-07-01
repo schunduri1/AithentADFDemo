@@ -10,12 +10,22 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQl_DB_Books",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
 				}
 			],
 			"sinks": [],
 			"transformations": [
 				{
 					"name": "flatten1"
+				},
+				{
+					"name": "lookup1"
 				}
 			],
 			"scriptLines": [
@@ -27,9 +37,24 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
+				"source(output(",
+				"          ID as integer,",
+				"          author as string,",
+				"          description as string,",
+				"          genre as string,",
+				"          price as double,",
+				"          publish_date as date,",
+				"          title as string,",
+				"          BookId as string,",
+				"          hashcolumn as binary",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
 				"source1 foldDown(unrollMultiple(catalog.book,catalog.book.languages.language),",
 				"     mapColumn(",
-				"          src_id = catalog.book.{@id},",
+				"          src_BookId = catalog.book.{@id},",
 				"          src_author = catalog.book.author,",
 				"          src_description = catalog.book.description,",
 				"          src_genre = catalog.book.genre,",
@@ -39,7 +64,11 @@
 				"          src_title = catalog.book.title",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1"
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1, source2 lookup(src_BookId == BookId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1"
 			]
 		}
 	}
