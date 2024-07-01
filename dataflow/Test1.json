@@ -1,0 +1,58 @@
+{
+	"name": "Test1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_AzureBlob_books_xml",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "flatten1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Library as (Book as (BookDescription as string, BookName as string, Languages as (Language as string[]), PublishDate as date, PublisherLicNumber as integer)[])",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     validationMode: 'none',",
+				"     namespaces: true) ~> source1",
+				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
+				"     mapColumn(",
+				"          BookDescription = Library.Book.BookDescription,",
+				"          BookName = Library.Book.BookName,",
+				"          Language = Library.Book.Languages.Language,",
+				"          PublishDate = Library.Book.PublishDate,",
+				"          PublisherLicNumber = Library.Book.PublisherLicNumber",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"select1 derive(ID = uuid()) ~> derivedColumn1",
+				"flatten1 select(mapColumn(",
+				"          BookDescription,",
+				"          BookName,",
+				"          PublishDate,",
+				"          PublisherLicNumber",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
+			]
+		}
+	}
+}
