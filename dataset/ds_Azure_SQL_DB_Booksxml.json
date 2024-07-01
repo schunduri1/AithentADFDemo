@@ -1,0 +1,38 @@
+{
+	"name": "ds_Azure_SQL_DB_Booksxml",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "BookID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "BookName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "BookDescription",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PublishDate",
+				"type": "date"
+			},
+			{
+				"name": "PublisherLicNumber",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Books"
+		}
+	}
+}
