@@ -17,6 +17,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "source2"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL_DB_Booksxml",
+						"type": "DatasetReference"
+					},
+					"name": "source3"
 				}
 			],
 			"sinks": [
@@ -40,6 +47,12 @@
 				},
 				{
 					"name": "select2"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "select3"
 				}
 			],
 			"scriptLines": [
@@ -59,6 +72,17 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source2",
+				"source(output(",
+				"          BookID as integer,",
+				"          BookName as string,",
+				"          BookDescription as string,",
+				"          PublishDate as date,",
+				"          PublisherLicNumber as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source3",
 				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
 				"     mapColumn(",
 				"          BookDescription = Library.Book.BookDescription,",
@@ -96,6 +120,16 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2, source3 lookup(src_BookName == BookName,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 select(mapColumn(",
+				"          src_Language,",
+				"          BookID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
