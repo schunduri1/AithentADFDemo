@@ -40,6 +40,9 @@
 				},
 				{
 					"name": "flatten1"
+				},
+				{
+					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -74,7 +77,7 @@
 				"flatten1 derive(ID = uuid()) ~> derivedColumn1",
 				"derivedColumn1 split(1==1,",
 				"     1==1,",
-				"     disjoint: false) ~> split1@(Books, Language, Others)",
+				"     disjoint: true) ~> split1@(Books, Language, Others)",
 				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
 				"     mapColumn(",
 				"          BookDescription = Library.Book.BookDescription,",
@@ -85,6 +88,12 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"split1@Language select(mapColumn(",
+				"          Language,",
+				"          BookId = ID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
