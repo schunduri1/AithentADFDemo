@@ -90,7 +90,7 @@
 				"     validateSchema: false,",
 				"     input(",
 				"          LanguageID as integer,",
-				"          BookID as integer,",
+				"          fk_BookId as integer,",
 				"          LanguageName as string",
 				"     ),",
 				"     deletable:false,",
