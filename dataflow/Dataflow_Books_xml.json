@@ -75,7 +75,7 @@
 				"derivedColumn1 split(1==1,",
 				"     1==1,",
 				"     disjoint: false) ~> split1@(Books, Language, Others)",
-				"source1 foldDown(unrollMultiple((Library.Book),(Library.Book.Languages.Language)),",
+				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
 				"     mapColumn(",
 				"          BookDescription = Library.Book.BookDescription,",
 				"          BookName = Library.Book.BookName,",
