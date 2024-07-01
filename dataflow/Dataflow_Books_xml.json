@@ -16,9 +16,6 @@
 			"transformations": [
 				{
 					"name": "flatten1"
-				},
-				{
-					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -31,10 +28,11 @@
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
 				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
+				"     mapColumn(",
+				"          Library",
+				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"flatten1 select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
 			]
 		}
 	}
