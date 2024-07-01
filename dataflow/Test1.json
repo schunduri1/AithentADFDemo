@@ -22,6 +22,12 @@
 				},
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -55,7 +61,17 @@
 				"          BookName,",
 				"          PublishDate,",
 				"          PublisherLicNumber),",
-				"     count = count(PublisherLicNumber)) ~> aggregate1"
+				"     count = count(PublisherLicNumber)) ~> aggregate1",
+				"aggregate1 derive(hashcolumn = toBinary(md5(BookDescription+BookName))) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          BookDescription,",
+				"          BookName,",
+				"          PublishDate,",
+				"          PublisherLicNumber,",
+				"          hashcolumn",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2"
 			]
 		}
 	}
