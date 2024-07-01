@@ -26,12 +26,16 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL_DB_Languagexml",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
 				}
 			],
 			"transformations": [
-				{
-					"name": "select1"
-				},
 				{
 					"name": "derivedColumn1"
 				},
@@ -43,6 +47,9 @@
 				},
 				{
 					"name": "select2"
+				},
+				{
+					"name": "select3"
 				}
 			],
 			"scriptLines": [
@@ -65,15 +72,6 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source3",
-				"split1@Books select(mapColumn(",
-				"          BookDescription,",
-				"          BookName,",
-				"          PublishDate,",
-				"          PublisherLicNumber,",
-				"          BookId = ID",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
 				"flatten1 derive(ID = uuid()) ~> derivedColumn1",
 				"derivedColumn1 split(1==1,",
 				"     1==1,",
@@ -94,7 +92,16 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
-				"select1 sink(allowSchemaDrift: true,",
+				"split1@Books select(mapColumn(",
+				"          BookDescription,",
+				"          BookName,",
+				"          PublishDate,",
+				"          PublisherLicNumber,",
+				"          ID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          BookID as integer,",
@@ -110,7 +117,26 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          LanguageID as integer,",
+				"          BookID as integer,",
+				"          LanguageName as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          BookID = BookId,",
+				"          LanguageName = Language",
+				"     )) ~> sink2"
 			]
 		}
 	}
