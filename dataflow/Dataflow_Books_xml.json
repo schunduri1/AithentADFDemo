@@ -37,6 +37,9 @@
 				},
 				{
 					"name": "flatten2"
+				},
+				{
+					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -84,6 +87,15 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten2",
+				"flatten2 select(mapColumn(",
+				"          src_BookDescription = BookDescription,",
+				"          src_BookName = BookName,",
+				"          src_Language = Language,",
+				"          src_PublishDate = PublishDate,",
+				"          src_PublisherLicNumber = PublisherLicNumber",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
