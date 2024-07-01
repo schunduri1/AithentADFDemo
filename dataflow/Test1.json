@@ -18,10 +18,10 @@
 					"name": "flatten1"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "select1"
 				},
 				{
-					"name": "select1"
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -43,7 +43,6 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"select1 derive(ID = uuid()) ~> derivedColumn1",
 				"flatten1 select(mapColumn(",
 				"          BookDescription,",
 				"          BookName,",
@@ -51,7 +50,12 @@
 				"          PublisherLicNumber",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 aggregate(groupBy(BookDescription,",
+				"          BookName,",
+				"          PublishDate,",
+				"          PublisherLicNumber),",
+				"     count = count(PublisherLicNumber)) ~> aggregate1"
 			]
 		}
 	}
