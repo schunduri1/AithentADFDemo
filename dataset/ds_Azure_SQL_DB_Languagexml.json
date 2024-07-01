@@ -1,0 +1,31 @@
+{
+	"name": "ds_Azure_SQL_DB_Languagexml",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "LanguageID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "BookID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LanguageName",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Languages"
+		}
+	}
+}
