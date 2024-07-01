@@ -30,13 +30,16 @@
 			],
 			"transformations": [
 				{
-					"name": "flatten1"
-				},
-				{
 					"name": "select1"
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "flatten1"
 				}
 			],
 			"scriptLines": [
@@ -59,17 +62,7 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source3",
-				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
-				"     mapColumn(",
-				"          BookDescription = Library.Book.BookDescription,",
-				"          BookName = Library.Book.BookName,",
-				"          Languages = Library.Book.Languages,",
-				"          PublishDate = Library.Book.PublishDate,",
-				"          PublisherLicNumber = Library.Book.PublisherLicNumber",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"derivedColumn1 select(mapColumn(",
+				"split1@Books select(mapColumn(",
 				"          BookDescription,",
 				"          BookName,",
 				"          PublishDate,",
@@ -78,6 +71,19 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"flatten1 derive(ID = uuid()) ~> derivedColumn1",
+				"derivedColumn1 split(1==1,",
+				"     1==1,",
+				"     disjoint: false) ~> split1@(Books, Language, Others)",
+				"source1 foldDown(unrollMultiple((Library.Book),(Library.Book.Languages.Language)),",
+				"     mapColumn(",
+				"          BookDescription = Library.Book.BookDescription,",
+				"          BookName = Library.Book.BookName,",
+				"          Language = Library.Book.Languages.Language,",
+				"          PublishDate = Library.Book.PublishDate,",
+				"          PublisherLicNumber = Library.Book.PublisherLicNumber",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
