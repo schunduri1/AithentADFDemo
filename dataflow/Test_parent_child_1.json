@@ -213,7 +213,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          BookID = ID,",
+				"          fk_BookId = ID,",
 				"          LanguageName = language",
 				"     )) ~> sink2"
 			]
