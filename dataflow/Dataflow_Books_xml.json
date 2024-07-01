@@ -30,7 +30,7 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
-				"source1 foldDown(unrollMultiple((Library.Book),(Library.Book.Languages.Language)),",
+				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
 				"flatten1 select(skipDuplicateMapInputs: true,",
