@@ -29,7 +29,11 @@
 				"     namespaces: true) ~> source1",
 				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
 				"     mapColumn(",
-				"          Library",
+				"          BookDescription = Library.Book.BookDescription,",
+				"          BookName = Library.Book.BookName,",
+				"          Languages = Library.Book.Languages,",
+				"          PublishDate = Library.Book.PublishDate,",
+				"          PublisherLicNumber = Library.Book.PublisherLicNumber",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1"
