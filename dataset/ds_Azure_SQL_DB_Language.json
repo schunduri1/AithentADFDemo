@@ -14,7 +14,7 @@
 				"precision": 10
 			},
 			{
-				"name": "BookID",
+				"name": "fk_BookId",
 				"type": "int",
 				"precision": 10
 			},
