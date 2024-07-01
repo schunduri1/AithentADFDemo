@@ -37,9 +37,6 @@
 			],
 			"transformations": [
 				{
-					"name": "derivedColumn1"
-				},
-				{
 					"name": "split1"
 				},
 				{
@@ -50,6 +47,9 @@
 				},
 				{
 					"name": "select3"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -72,7 +72,6 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source3",
-				"flatten1 derive(ID = uuid()) ~> derivedColumn1",
 				"derivedColumn1 split(1==1,",
 				"     1==1,",
 				"     disjoint: true) ~> split1@(Books, Language, Others)",
@@ -101,6 +100,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
+				"flatten1 derive(ID = uuid()) ~> derivedColumn1",
 				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
