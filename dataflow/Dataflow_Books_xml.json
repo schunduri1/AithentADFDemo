@@ -13,13 +13,6 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_AzureBlob_books_xml",
-						"type": "DatasetReference"
-					},
-					"name": "source2"
-				},
-				{
-					"dataset": {
 						"referenceName": "ds_Azure_SQL_DB_Booksxml",
 						"type": "DatasetReference"
 					},
@@ -43,16 +36,7 @@
 					"name": "select1"
 				},
 				{
-					"name": "flatten2"
-				},
-				{
-					"name": "select2"
-				},
-				{
-					"name": "lookup1"
-				},
-				{
-					"name": "select3"
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -64,14 +48,6 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source1",
-				"source(output(",
-				"          Library as (Book as (BookDescription as string, BookName as string, Languages as (Language as string[]), PublishDate as date, PublisherLicNumber as integer)[])",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false,",
-				"     validationMode: 'none',",
-				"     namespaces: true) ~> source2",
 				"source(output(",
 				"          BookID as integer,",
 				"          BookName as string,",
@@ -93,7 +69,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
-				"flatten1 select(mapColumn(",
+				"derivedColumn1 select(mapColumn(",
 				"          BookDescription,",
 				"          BookName,",
 				"          PublishDate,",
@@ -101,35 +77,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"source2 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
-				"     mapColumn(",
-				"          BookDescription = Library.Book.BookDescription,",
-				"          BookName = Library.Book.BookName,",
-				"          Language = Library.Book.Languages.Language,",
-				"          PublishDate = Library.Book.PublishDate,",
-				"          PublisherLicNumber = Library.Book.PublisherLicNumber",
-				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten2",
-				"flatten2 select(mapColumn(",
-				"          src_BookDescription = BookDescription,",
-				"          src_BookName = BookName,",
-				"          src_Language = Language,",
-				"          src_PublishDate = PublishDate,",
-				"          src_PublisherLicNumber = PublisherLicNumber",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2",
-				"select2, source3 lookup(src_BookName == BookName,",
-				"     multiple: false,",
-				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup1",
-				"lookup1 select(mapColumn(",
-				"          src_Language,",
-				"          BookID",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select3",
+				"flatten1 derive(ID = uuid()) ~> derivedColumn1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
