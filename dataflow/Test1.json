@@ -50,9 +50,6 @@
 					"name": "select1"
 				},
 				{
-					"name": "aggregate1"
-				},
-				{
 					"name": "derivedColumn1"
 				},
 				{
@@ -96,7 +93,7 @@
 				"     ignoreNoFilesFound: false,",
 				"     validationMode: 'none',",
 				"     namespaces: true) ~> source3",
-				"source1 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
+				"source1 foldDown(unroll(Library.Book),",
 				"     mapColumn(",
 				"          BookDescription = Library.Book.BookDescription,",
 				"          BookName = Library.Book.BookName,",
@@ -114,12 +111,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 aggregate(groupBy(BookDescription,",
-				"          BookName,",
-				"          PublishDate,",
-				"          PublisherLicNumber),",
-				"     count = count(PublisherLicNumber)) ~> aggregate1",
-				"aggregate1 derive(hashcolumn = toBinary(md5(BookDescription+BookName))) ~> derivedColumn1",
+				"select1 derive(hashcolumn = toBinary(md5(BookDescription+BookName))) ~> derivedColumn1",
 				"derivedColumn1 select(mapColumn(",
 				"          BookDescription,",
 				"          BookName,",
