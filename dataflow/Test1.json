@@ -121,7 +121,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
-				"source3 foldDown(unrollMultiple(Library.Book,Library.Book.Languages.Language),",
+				"source3 foldDown(unroll(Library.Book.Languages.Language),",
 				"     mapColumn(",
 				"          BookDescription = Library.Book.BookDescription,",
 				"          BookName = Library.Book.BookName,",
