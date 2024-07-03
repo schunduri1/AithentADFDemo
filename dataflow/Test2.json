@@ -137,7 +137,11 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          BookID = reference_BookId,",
+				"          LanguageName = Language",
+				"     )) ~> sink2"
 			]
 		}
 	}
