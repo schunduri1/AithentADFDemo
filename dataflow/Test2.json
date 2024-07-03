@@ -46,6 +46,9 @@
 				},
 				{
 					"name": "flatten3"
+				},
+				{
+					"name": "select3"
 				}
 			],
 			"scriptLines": [
@@ -95,6 +98,12 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten3",
+				"flatten3 select(mapColumn(",
+				"          Language,",
+				"          reference_BookId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
 				"select2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -114,7 +123,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     saveOrder: 1,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
-				"flatten3 sink(allowSchemaDrift: true,",
+				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          LanguageID as integer,",
