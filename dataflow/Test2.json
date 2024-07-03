@@ -134,7 +134,7 @@
 				"     validateSchema: false,",
 				"     input(",
 				"          LanguageID as integer,",
-				"          BookID as integer,",
+				"          reference_BookID as integer,",
 				"          LanguageName as string",
 				"     ),",
 				"     deletable:false,",
@@ -146,7 +146,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          BookID = reference_BookId,",
+				"          reference_BookID = reference_BookId,",
 				"          LanguageName = Language",
 				"     )) ~> sink2"
 			]
