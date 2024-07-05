@@ -59,6 +59,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -114,13 +117,15 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten3",
-				"flatten3 select(mapColumn(",
+				"derivedColumn2 select(mapColumn(",
 				"          Language,",
-				"          reference_BookId",
+				"          reference_BookId,",
+				"          increment",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"surrogateKey1 derive(Increment = MaxReferenceBookId#outputs()[1]. Reference_BookId +reference_BookId) ~> derivedColumn1",
+				"flatten3 derive(increment = MaxReferenceBookId#outputs()[1]. Reference_BookId +reference_BookId) ~> derivedColumn2",
 				"select2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
