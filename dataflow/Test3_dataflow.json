@@ -141,7 +141,7 @@
 				"     saveOrder: 1,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          reference_bookId = reference_BookId,",
+				"          reference_bookId = Increment,",
 				"          BookName,",
 				"          BookDescription,",
 				"          PublishDate,",
@@ -172,7 +172,10 @@
 				"     store: 'cache',",
 				"     format: 'inline',",
 				"     output: false,",
-				"     saveOrder: 1) ~> MaxReferenceBookId"
+				"     saveOrder: 1,",
+				"     mapColumn(",
+				"          Reference_BookId",
+				"     )) ~> MaxReferenceBookId"
 			]
 		}
 	}
