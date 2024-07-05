@@ -141,7 +141,7 @@
 				"     saveOrder: 1,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          reference_bookId = Increment,",
+				"          reference_bookId = reference_BookId,",
 				"          BookName,",
 				"          BookDescription,",
 				"          PublishDate,",
