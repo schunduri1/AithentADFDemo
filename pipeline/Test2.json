@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Test2_errorhandling",
+						"referenceName": "Test2",
 						"type": "DataFlowReference"
 					},
 					"compute": {
