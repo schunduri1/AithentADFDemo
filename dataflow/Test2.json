@@ -146,6 +146,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
+				"          reference_BookID = reference_BookId,",
 				"          LanguageName = Language",
 				"     )) ~> sink2"
 			]
