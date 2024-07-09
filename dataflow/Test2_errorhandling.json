@@ -1,0 +1,190 @@
+{
+	"name": "Test2_errorhandling",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_AzureBlob_books_xml",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_errorlog",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL_DB_Languagexml",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Azure_SQL_DB_Booksxml",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flatten1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "flatten3"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "select4"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "select5"
+				},
+				{
+					"name": "select6"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Library as (Book as (BookDescription as string, BookName as string, Languages as (Language as string[]), PublishDate as date, PublisherLicNumber as integer)[])",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     validationMode: 'none',",
+				"     namespaces: true) ~> source1",
+				"source1 foldDown(unroll(Library.Book),",
+				"     mapColumn(",
+				"          BookDescription = Library.Book.BookDescription,",
+				"          BookName = Library.Book.BookName,",
+				"          Language = Library.Book.Languages.Language,",
+				"          PublishDate = Library.Book.PublishDate,",
+				"          PublisherLicNumber = Library.Book.PublisherLicNumber",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1",
+				"flatten1 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 keyGenerate(output(reference_BookId as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 foldDown(unroll(Language),",
+				"     mapColumn(",
+				"          BookDescription,",
+				"          BookName,",
+				"          Language,",
+				"          PublishDate,",
+				"          PublisherLicNumber,",
+				"          reference_BookId",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten3",
+				"flatten3 select(mapColumn(",
+				"          Language,",
+				"          reference_BookId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"surrogateKey1 select(mapColumn(",
+				"          BookDescription,",
+				"          BookName,",
+				"          PublishDate,",
+				"          PublisherLicNumber,",
+				"          reference_BookId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select4",
+				"select4 split(isNull(toString(PublishDate, 'YYYY-MM-DD')),",
+				"     disjoint: false) ~> split1@(ErrorRows, correctRows)",
+				"split1@ErrorRows select(mapColumn(",
+				"          BookDescription,",
+				"          BookName,",
+				"          PublishDate,",
+				"          PublisherLicNumber,",
+				"          reference_BookId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select5",
+				"split1@correctRows select(mapColumn(",
+				"          BookDescription,",
+				"          BookName,",
+				"          PublishDate,",
+				"          PublisherLicNumber,",
+				"          reference_BookId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select6",
+				"select5 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     mapColumn(",
+				"          reference_bookId = reference_BookId,",
+				"          BookName,",
+				"          BookDescription,",
+				"          PublishDate,",
+				"          PublisherLicNumber",
+				"     ),",
+				"     format: 'table') ~> sink1",
+				"select3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          LanguageID as integer,",
+				"          reference_BookID as integer,",
+				"          LanguageName as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          reference_BookID = reference_BookId,",
+				"          LanguageName = Language",
+				"     )) ~> sink2",
+				"select6 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          BookID as integer,",
+				"          reference_bookId as integer,",
+				"          BookName as string,",
+				"          BookDescription as string,",
+				"          PublishDate as date,",
+				"          PublisherLicNumber as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink3"
+			]
+		}
+	}
+}
