@@ -85,7 +85,7 @@
 				}
 			},
 			{
-				"name": "Stored procedure1",
+				"name": "On Failure",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
