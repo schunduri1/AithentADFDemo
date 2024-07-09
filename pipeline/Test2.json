@@ -83,6 +83,64 @@
 					"referenceName": "ls_AzureSqlDatabase",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Test2",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[sp_dataloadlog]",
+					"storedProcedureParameters": {
+						"error": {
+							"value": {
+								"value": "@activity('Test2').output.errors",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"filename": {
+							"value": "BookXML.xml",
+							"type": "String"
+						},
+						"pipeline_runId": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"status": {
+							"value": "Failure",
+							"type": "String"
+						},
+						"trigger_date": {
+							"value": {
+								"value": "@pipeline().TriggerTime",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
