@@ -1,0 +1,43 @@
+{
+	"name": "df_Incremented_value",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_AzureBlob_books_xml",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Library as (Book as (BookDescription as string, BookName as string, Languages as (Language as string[]), PublishDate as date, PublisherLicNumber as integer)[])",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     validationMode: 'none',",
+				"     namespaces: true) ~> source1",
+				"source1 foldDown(unroll(Library.Book),",
+				"     mapColumn(",
+				"          BookDescription = Library.Book.BookDescription,",
+				"          BookName = Library.Book.BookName,",
+				"          Languages = Library.Book.Languages,",
+				"          PublishDate = Library.Book.PublishDate,",
+				"          PublisherLicNumber = Library.Book.PublisherLicNumber",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
+			]
+		}
+	}
+}
