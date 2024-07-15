@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "errorlog",
 				"container": "error"
 			},
 			"columnDelimiter": ",",
