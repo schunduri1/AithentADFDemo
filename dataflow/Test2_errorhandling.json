@@ -62,6 +62,9 @@
 				},
 				{
 					"name": "select6"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -114,7 +117,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select4",
-				"select4 split(isNull(toString(PublishDate, 'yyyy-MM-dd')),",
+				"derivedColumn1 split(Validation == 'Invalid',",
 				"     disjoint: false) ~> split1@(ErrorRows, correctRows)",
 				"split1@ErrorRows select(mapColumn(",
 				"          BookDescription,",
@@ -134,6 +137,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select6",
+				"select4 derive(Validation = iif(isNull(PublisherLicNumber), 'Invalid', 'Valid')) ~> derivedColumn1",
 				"select5 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
