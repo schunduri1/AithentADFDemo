@@ -3,13 +3,13 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Stored procedure1",
+				"name": "ProcessSourceXml",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Data flow1",
+						"activity": "GetXmlStringFromSource",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
@@ -22,10 +22,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[GetNextID]",
+					"storedProcedureName": "[dbo].[InsertBooksAndLanguagesFromXML]",
 					"storedProcedureParameters": {
-						"EntityType": {
-							"value": "",
+						"xml": {
+							"value": {
+								"value": "@activity('GetXmlStringFromSource').output.Response",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
@@ -36,8 +39,8 @@
 				}
 			},
 			{
-				"name": "Data flow1",
-				"type": "ExecuteDataFlow",
+				"name": "GetXmlStringFromSource",
+				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -48,15 +51,8 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "df_Incremented_value",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
+					"method": "GET",
+					"url": "https://parsexmlblob.azurewebsites.net/api/parse_xml?code=NJ7y8Ngy4cqg_QYbia-LJowSJZDp1cONe7hL9PrIfKVsAzFuFHCDbA%3D%3D&blobUri=https://edristorage.blob.core.windows.net/raw/BookXML.xml"
 				}
 			}
 		],
